@@ -253,6 +253,7 @@
     
     
     
+    
     <!-- SEO Meta Tags -->
     <meta name="description" content="Play a suite of premium, ad-free web games directly in your browser. Features relaxing puzzles, rhythm hacking, and cyberpunk arcades.">
     <meta name="keywords" content="free browser games, premium web games, no ads games, online puzzle games, retro arcade browser">
@@ -489,6 +490,61 @@
                 path: 'Pacman/index.html',
                 desc: 'Navigate the neon maze, chomp all the dots, and avoid the ghosts. Grab a power pellet to turn the tables on your pursuers.',
                 stats: [{ label: 'TOP SCORE', key: 'pacman_highscore' }]
+            },
+            {
+                id: 'pong',
+                title: 'Pong',
+                tagline: 'DIGITAL TENNIS',
+                color: '#ffffff',
+                colorAlpha: 'rgba(255, 255, 255, 0.3)',
+                icon: '▮',
+                path: 'Pong/index.html',
+                desc: 'The original digital tennis. A beautifully responsive, pure HTML5 clone of the classic arcade hit.',
+                stats: [{ label: 'BEST SCORE', key: 'pong_score' }]
+            },
+            {
+                id: 'minesweeper',
+                title: 'Minesweeper',
+                tagline: 'LOGIC BOMB',
+                color: '#ff0055',
+                colorAlpha: 'rgba(255, 0, 85, 0.3)',
+                icon: '☀',
+                path: 'Minesweeper/index.html',
+                desc: 'Clear the board without detonating hidden mines using logical deduction and number proximity.',
+                stats: [{ label: 'BEST TIME', key: 'minesweeper_score' }]
+            },
+            {
+                id: 'match3',
+                title: 'Neon Match-3',
+                tagline: 'CASCADING GEMS',
+                color: '#aa00ff',
+                colorAlpha: 'rgba(170, 0, 255, 0.3)',
+                icon: '✧',
+                path: 'Match3/index.html',
+                desc: 'Swap neon gems to create massive chain reactions. A highly responsive puzzle matching game.',
+                stats: [{ label: 'HIGH SCORE', key: 'match3_score' }]
+            },
+            {
+                id: 'solitaire',
+                title: 'Klondike Solitaire',
+                tagline: 'CLASSIC CARDS',
+                color: '#00ffaa',
+                colorAlpha: 'rgba(0, 255, 170, 0.3)',
+                icon: '♠',
+                path: 'Solitaire/index.html',
+                desc: 'The legendary relaxing card game, fully rebuilt with smooth tap mechanics and a premium aesthetic.',
+                stats: []
+            },
+            {
+                id: 'bounce',
+                title: 'Bounce',
+                tagline: 'RED BALL RUNNER',
+                color: '#ff0000',
+                colorAlpha: 'rgba(255, 0, 0, 0.3)',
+                icon: '⚽',
+                path: 'Bounce/index.html',
+                desc: 'Navigate the endless retro platformer as a bouncing red ball, dodging spikes and making leaps of faith.',
+                stats: [{ label: 'MAX LEVEL', key: 'bounce_level' }]
             }
         ];
 
@@ -498,7 +554,9 @@
             'mnemonic': 'logic', 'lumina': 'arcade', 'bitbeat': 'arcade',
             'dinorunner': 'retro', 'game2048': 'logic', 'tetris': 'retro',
             'asteroids': 'retro', 'floppybird': 'arcade', 'snake': 'retro',
-            'spaceinvaders': 'retro', 'pacman': 'retro'
+            'spaceinvaders': 'retro', 'pacman': 'retro', 'pong': 'retro',
+            'minesweeper': 'logic', 'match3': 'logic', 'solitaire': 'logic',
+            'bounce': 'arcade'
         };
 
         GAMES.forEach(g => g.category = CATEGORY_MAP[g.id] || 'retro');

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Retro Bounce - Endless Platformer | Play Free</title>
+    <link rel="stylesheet" href="../assets/toast.css">
+    <script src="../assets/toast.js"></script>
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #222; overflow: hidden; font-family: 'Courier New', Courier, monospace; }
+        canvas { background: #87CEEB; display: block; }
+        #ui { position: absolute; top: 20px; left: 20px; color: #fff; font-size: 24px; font-weight: bold; text-shadow: 2px 2px 0 #000; }
+        .controls { position: absolute; bottom: 30px; width: 100%; display: flex; justify-content: space-around; pointer-events: none; }
+        .btn { width: 80px; height: 80px; background: rgba(0,0,0,0.3); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; font-size: 40px; pointer-events: auto; user-select: none; }
+        .btn:active { background: rgba(0,0,0,0.6); }
+    </style>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Navigate the bouncing red ball through treacherous spikes and platforms in this retro endless runner.">
+    <meta name="keywords" content="bounce game, nokia bounce clone, endless runner ball, retro platformer, red ball game">
+    <meta name="author" content="SilenVault">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://games.silenvault.com/Bounce/">
+    <meta property="og:title" content="Retro Bounce - Endless Platformer | Play Free">
+    <meta property="og:description" content="Navigate the bouncing red ball through treacherous spikes and platforms in this retro endless runner.">
+    <meta property="og:image" content="https://games.silenvault.com/assets/og-bounce.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://games.silenvault.com/Bounce/">
+    <meta property="twitter:title" content="Retro Bounce - Endless Platformer | Play Free">
+    <meta property="twitter:description" content="Navigate the bouncing red ball through treacherous spikes and platforms in this retro endless runner.">
+    <meta property="twitter:image" content="https://games.silenvault.com/assets/og-bounce.png">
+</head>
+<body>
+    <div id="ui">LEVEL: <span id="level">1</span></div>
+    <canvas id="game"></canvas>
+    <div class="controls">
+        <div class="btn" id="btn-left">⬅</div>
+        <div class="btn" id="btn-right">➡</div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('game');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let ball = { x: 50, y: 50, r: 15, dy: 0, dx: 0, color: '#ff0000' };
+        let gravity = 0.5, bounce = -10, speed = 4;
+        let platforms = [], spikes = [], level = 1, isGameOver = false;
+        let keys = { left: false, right: false };
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            if(platforms.length === 0) generateLevel();
+        }
+        window.addEventListener('resize', resize);
+
+        // Controls
+        window.addEventListener('keydown', e => { if(e.key==='ArrowLeft') keys.left=true; if(e.key==='ArrowRight') keys.right=true; });
+        window.addEventListener('keyup', e => { if(e.key==='ArrowLeft') keys.left=false; if(e.key==='ArrowRight') keys.right=false; });
+        document.getElementById('btn-left').addEventListener('touchstart', e => { e.preventDefault(); keys.left=true; });
+        document.getElementById('btn-left').addEventListener('touchend', e => { e.preventDefault(); keys.left=false; });
+        document.getElementById('btn-right').addEventListener('touchstart', e => { e.preventDefault(); keys.right=true; });
+        document.getElementById('btn-right').addEventListener('touchend', e => { e.preventDefault(); keys.right=false; });
+
+        function generateLevel() {
+            platforms = []; spikes = [];
+            ball.x = width * 0.1; ball.y = height * 0.5; ball.dy = 0; ball.dx = 0;
+            
+            // Floor
+            platforms.push({ x: 0, y: height - 50, w: width * 3, h: 50 });
+            
+            // Obstacles
+            let currentX = width * 0.5;
+            for(let i=0; i<10 + level*2; i++) {
+                // Gap or wall
+                if(Math.random() > 0.5) {
+                    platforms.push({ x: currentX, y: height - 150, w: 100, h: 20 });
+                } else {
+                    spikes.push({ x: currentX + 50, y: height - 50 });
+                }
+                currentX += 300;
+            }
+            // End goal
+            platforms.push({ x: currentX, y: height - 200, w: 200, h: 20, isGoal: true });
+            document.getElementById('level').innerText = level;
+            isGameOver = false;
+        }
+
+        function update() {
+            if(isGameOver) return;
+            
+            // Horizontal move
+            if(keys.left) ball.dx = -speed;
+            else if(keys.right) ball.dx = speed;
+            else ball.dx *= 0.8; // friction
+            
+            ball.x += ball.dx;
+            
+            // Camera follow
+            let cameraOffset = ball.x - width * 0.3;
+            if(cameraOffset < 0) cameraOffset = 0;
+
+            // Vertical move
+            ball.dy += gravity;
+            ball.y += ball.dy;
+
+            // Collision
+            let onGround = false;
+            for(let p of platforms) {
+                if(ball.x > p.x && ball.x < p.x + p.w && ball.y + ball.r > p.y && ball.y - ball.r < p.y + p.h) {
+                    if(ball.dy > 0 && ball.y < p.y) {
+                        ball.y = p.y - ball.r;
+                        ball.dy = bounce; // Auto bounce!
+                        onGround = true;
+                        if(p.isGoal) {
+                            isGameOver = true;
+                            if(window.showToast) window.showToast("SECTOR CLEARED", "#00ff00");
+                            let hs = parseInt(localStorage.getItem('bounce_level') || '1');
+                            if(level > hs) localStorage.setItem('bounce_level', level);
+                            setTimeout(() => { level++; generateLevel(); }, 3000);
+                        }
+                    }
+                }
+            }
+
+            // Spike collision
+            for(let s of spikes) {
+                let dist = Math.hypot(ball.x - s.x, ball.y - s.y);
+                if(dist < ball.r + 15) {
+                    isGameOver = true;
+                    if(window.showToast) window.showToast("BALL PUNCTURED", "#ff0000");
+                    setTimeout(() => generateLevel(), 3000);
+                }
+            }
+
+            // Fall off screen
+            if(ball.y > height + 100) {
+                isGameOver = true;
+                if(window.showToast) window.showToast("SYSTEM FAILURE", "#ff0000");
+                setTimeout(() => generateLevel(), 3000);
+            }
+            
+            return cameraOffset;
+        }
+
+        function draw(cameraOffset) {
+            ctx.clearRect(0, 0, width, height);
+            ctx.save();
+            ctx.translate(-cameraOffset, 0);
+
+            // Spikes
+            ctx.fillStyle = '#666';
+            for(let s of spikes) {
+                ctx.beginPath();
+                ctx.moveTo(s.x, s.y);
+                ctx.lineTo(s.x - 15, s.y);
+                ctx.lineTo(s.x, s.y - 30);
+                ctx.lineTo(s.x + 15, s.y);
+                ctx.fill();
+            }
+
+            // Platforms
+            for(let p of platforms) {
+                ctx.fillStyle = p.isGoal ? '#00ff00' : '#8B4513';
+                ctx.fillRect(p.x, p.y, p.w, p.h);
+                if(!p.isGoal) {
+                    ctx.fillStyle = '#228B22'; // Grass top
+                    ctx.fillRect(p.x, p.y, p.w, 10);
+                }
+            }
+
+            // Ball
+            ctx.fillStyle = ball.color;
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Ball shading
+            ctx.fillStyle = 'rgba(255,255,255,0.3)';
+            ctx.beginPath();
+            ctx.arc(ball.x - 4, ball.y - 4, ball.r * 0.4, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        function loop() {
+            let offset = update();
+            if(offset !== undefined) draw(offset);
+            requestAnimationFrame(loop);
+        }
+
+        resize();
+        loop();
+    </script>
+</body>
+</html>

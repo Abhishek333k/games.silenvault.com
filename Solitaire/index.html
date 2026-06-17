@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Classic Solitaire (Klondike) | Play Free</title>
+    <link rel="stylesheet" href="../assets/toast.css">
+    <script src="../assets/toast.js"></script>
+    <style>
+        body { margin: 0; padding: 20px; background: #004400; color: #fff; font-family: 'Courier New', Courier, monospace; overflow-x: hidden; }
+        .board { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; max-width: 800px; margin: 0 auto; }
+        .row-top { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; max-width: 800px; margin: 0 auto 20px auto; }
+        .card { width: 100%; aspect-ratio: 2/3; background: #fff; border-radius: 5px; border: 1px solid #ccc; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; font-weight: bold; cursor: pointer; user-select: none; box-shadow: 2px 2px 5px rgba(0,0,0,0.5); position: relative; }
+        .card.red { color: #ff0000; }
+        .card.black { color: #000000; }
+        .card.back { background: repeating-linear-gradient(45deg, #0000ff, #0000ff 10px, #ffffff 10px, #ffffff 20px); border: 2px solid #fff; color: transparent; pointer-events: none; }
+        .card.selected { box-shadow: 0 0 15px #00ffff; transform: translateY(-5px); z-index: 10; }
+        .pile { width: 100%; aspect-ratio: 2/3; border: 2px dashed rgba(255,255,255,0.3); border-radius: 5px; position: relative; }
+        .card-stack { position: absolute; top: 0; left: 0; width: 100%; }
+        /* Offset cascaded cards */
+        .cascade-1 { top: 20px; } .cascade-2 { top: 40px; } .cascade-3 { top: 60px; } .cascade-4 { top: 80px; }
+        .cascade-5 { top: 100px; } .cascade-6 { top: 120px; } .cascade-7 { top: 140px; } .cascade-8 { top: 160px; }
+        .cascade-9 { top: 180px; } .cascade-10 { top: 200px; } .cascade-11 { top: 220px; } .cascade-12 { top: 240px; }
+        .cascade-13 { top: 260px; } .cascade-14 { top: 280px; } .cascade-15 { top: 300px; }
+        
+        .suits { position: absolute; font-size: 1rem; }
+        .top-left { top: 5px; left: 5px; }
+        .bottom-right { bottom: 5px; right: 5px; transform: rotate(180deg); }
+        .center-suit { font-size: 2rem; }
+    </style>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Play classic Klondike Solitaire directly in your browser. Relaxing, ad-free card game experience.">
+    <meta name="keywords" content="solitaire, klondike solitaire, free online solitaire, classic card game, ad-free solitaire">
+    <meta name="author" content="SilenVault">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://games.silenvault.com/Solitaire/">
+    <meta property="og:title" content="Classic Solitaire (Klondike) | Play Free">
+    <meta property="og:description" content="Play classic Klondike Solitaire directly in your browser. Relaxing, ad-free card game experience.">
+    <meta property="og:image" content="https://games.silenvault.com/assets/og-solitaire.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://games.silenvault.com/Solitaire/">
+    <meta property="twitter:title" content="Classic Solitaire (Klondike) | Play Free">
+    <meta property="twitter:description" content="Play classic Klondike Solitaire directly in your browser. Relaxing, ad-free card game experience.">
+    <meta property="twitter:image" content="https://games.silenvault.com/assets/og-solitaire.png">
+</head>
+<body>
+    <div class="row-top" id="top-row">
+        <!-- Deck, Waste, Empty, Foundations(4) -->
+        <div class="pile" id="deck" onclick="drawCard()"></div>
+        <div class="pile" id="waste"></div>
+        <div style="visibility: hidden;"></div>
+        <div class="pile" id="f1" onclick="moveToFoundation(1)"></div>
+        <div class="pile" id="f2" onclick="moveToFoundation(2)"></div>
+        <div class="pile" id="f3" onclick="moveToFoundation(3)"></div>
+        <div class="pile" id="f4" onclick="moveToFoundation(4)"></div>
+    </div>
+    <div class="board" id="tableau">
+        <!-- 7 Columns -->
+        <div class="pile" id="t1" onclick="moveToTableau(1)"></div>
+        <div class="pile" id="t2" onclick="moveToTableau(2)"></div>
+        <div class="pile" id="t3" onclick="moveToTableau(3)"></div>
+        <div class="pile" id="t4" onclick="moveToTableau(4)"></div>
+        <div class="pile" id="t5" onclick="moveToTableau(5)"></div>
+        <div class="pile" id="t6" onclick="moveToTableau(6)"></div>
+        <div class="pile" id="t7" onclick="moveToTableau(7)"></div>
+    </div>
+
+    <script>
+        const suits = ['♥', '♦', '♣', '♠'];
+        const values = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+        let deck = [], waste = [], foundations = [[], [], [], []], tableau = [[], [], [], [], [], [], []];
+        let selectedCard = null;
+
+        function init() {
+            // Create deck
+            for(let s of suits) {
+                for(let v of values) {
+                    deck.push({ suit: s, value: v, isRed: (s==='♥'||s==='♦'), valNum: values.indexOf(v)+1, isFaceUp: false });
+                }
+            }
+            // Shuffle
+            for(let i=deck.length-1; i>0; i--) {
+                const j = Math.floor(Math.random() * (i+1));
+                [deck[i], deck[j]] = [deck[j], deck[i]];
+            }
+            // Deal
+            for(let i=0; i<7; i++) {
+                for(let j=i; j<7; j++) {
+                    let card = deck.pop();
+                    if(i===j) card.isFaceUp = true;
+                    tableau[j].push(card);
+                }
+            }
+            render();
+        }
+
+        function createCardEl(card, cascadeIdx, source, colIdx) {
+            if(!card) return '';
+            const colorClass = card.isFaceUp ? (card.isRed ? 'red' : 'black') : 'back';
+            const content = card.isFaceUp ? `
+                <div class="suits top-left">${card.value}${card.suit}</div>
+                <div class="center-suit">${card.suit}</div>
+                <div class="suits bottom-right">${card.value}${card.suit}</div>
+            ` : '';
+            
+            const isSelected = (selectedCard && selectedCard.card === card) ? 'selected' : '';
+            return `<div class="card card-stack ${colorClass} cascade-${cascadeIdx} ${isSelected}" 
+                         onclick="event.stopPropagation(); selectCard('${source}', ${colIdx}, ${cascadeIdx})">
+                         ${content}
+                    </div>`;
+        }
+
+        function render() {
+            // Deck
+            document.getElementById('deck').innerHTML = deck.length > 0 ? `<div class="card back card-stack"></div>` : `<div style="text-align:center;margin-top:20px;cursor:pointer;">↻</div>`;
+            // Waste
+            document.getElementById('waste').innerHTML = waste.length > 0 ? createCardEl(waste[waste.length-1], 0, 'waste', 0) : '';
+            
+            // Foundations
+            for(let i=0; i<4; i++) {
+                document.getElementById('f'+(i+1)).innerHTML = foundations[i].length > 0 ? createCardEl(foundations[i][foundations[i].length-1], 0, 'foundation', i) : '';
+            }
+            
+            // Tableau
+            for(let i=0; i<7; i++) {
+                let html = '';
+                tableau[i].forEach((c, idx) => { html += createCardEl(c, idx, 'tableau', i); });
+                document.getElementById('t'+(i+1)).innerHTML = html;
+            }
+            
+            checkWin();
+        }
+
+        function drawCard() {
+            if(selectedCard) { selectedCard = null; render(); return; }
+            if(deck.length === 0) {
+                deck = waste.reverse();
+                deck.forEach(c => c.isFaceUp = false);
+                waste = [];
+            } else {
+                let c = deck.pop();
+                c.isFaceUp = true;
+                waste.push(c);
+            }
+            render();
+        }
+
+        function selectCard(source, colIdx, cardIdx) {
+            let col = source === 'tableau' ? tableau[colIdx] : (source === 'waste' ? waste : foundations[colIdx]);
+            let card = col[cardIdx];
+            
+            if(!card.isFaceUp) return;
+
+            // If already selected, deselect
+            if(selectedCard && selectedCard.card === card) {
+                selectedCard = null;
+                render();
+                return;
+            }
+
+            // If nothing selected, select it
+            if(!selectedCard) {
+                // Only allow selecting the top card of waste/foundation, or any face up card in tableau
+                if(source === 'waste' && cardIdx !== waste.length-1) return;
+                if(source === 'foundation' && cardIdx !== foundations[colIdx].length-1) return;
+                selectedCard = { source, colIdx, cardIdx, card };
+                render();
+            } else {
+                // We have a selection, try to move it HERE (target is this card's pile)
+                if(source === 'tableau') moveToTableau(colIdx+1);
+                else if(source === 'foundation') moveToFoundation(colIdx+1);
+            }
+        }
+
+        function moveToTableau(tNum) {
+            if(!selectedCard) return;
+            const colIdx = tNum - 1;
+            const targetCol = tableau[colIdx];
+            const topCard = targetCol.length > 0 ? targetCol[targetCol.length-1] : null;
+
+            // Rules
+            if(topCard) {
+                if(topCard.isRed === selectedCard.card.isRed || topCard.valNum !== selectedCard.card.valNum + 1) return; // Invalid
+            } else {
+                if(selectedCard.card.valNum !== 13) return; // Only Kings on empty
+            }
+
+            // Execute Move
+            executeMove(tableau[colIdx]);
+        }
+
+        function moveToFoundation(fNum) {
+            if(!selectedCard) return;
+            // Can only move single card to foundation
+            let sourceCol = selectedCard.source === 'tableau' ? tableau[selectedCard.colIdx] : waste;
+            if(selectedCard.cardIdx !== sourceCol.length - 1) return; 
+
+            const colIdx = fNum - 1;
+            const targetCol = foundations[colIdx];
+            const topCard = targetCol.length > 0 ? targetCol[targetCol.length-1] : null;
+
+            if(topCard) {
+                if(topCard.suit !== selectedCard.card.suit || topCard.valNum !== selectedCard.card.valNum - 1) return;
+            } else {
+                if(selectedCard.card.valNum !== 1) return; // Aces only
+            }
+
+            executeMove(foundations[colIdx]);
+        }
+
+        function executeMove(targetArray) {
+            let sourceCol;
+            if(selectedCard.source === 'tableau') sourceCol = tableau[selectedCard.colIdx];
+            else if(selectedCard.source === 'waste') sourceCol = waste;
+            else sourceCol = foundations[selectedCard.colIdx];
+
+            // Move the cards
+            const cardsToMove = sourceCol.splice(selectedCard.cardIdx);
+            cardsToMove.forEach(c => targetArray.push(c));
+
+            // Flip new top card
+            if(sourceCol.length > 0 && selectedCard.source === 'tableau') {
+                sourceCol[sourceCol.length-1].isFaceUp = true;
+            }
+
+            selectedCard = null;
+            render();
+        }
+
+        function checkWin() {
+            let total = foundations.reduce((sum, f) => sum + f.length, 0);
+            if(total === 52) {
+                if(window.showToast) window.showToast("DECK CLEARED", "#00ff00");
+                setTimeout(() => { init(); }, 5000);
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Minesweeper - Classic Logic Puzzle | Play Free</title>
+    <link rel="stylesheet" href="../assets/toast.css">
+    <script src="../assets/toast.js"></script>
+    <style>
+        body { margin: 0; padding: 20px; background: #0a0a0f; color: #fff; font-family: 'Courier New', Courier, monospace; display: flex; flex-direction: column; align-items: center; }
+        .header { display: flex; justify-content: space-between; width: 100%; max-width: 400px; margin-bottom: 20px; font-size: 1.5rem; font-weight: bold; color: #00ffff; }
+        .grid { display: grid; gap: 2px; background: #333; padding: 4px; border-radius: 4px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.1); }
+        .cell { width: 30px; height: 30px; background: #1a1a24; border: 1px solid #2a2a35; display: flex; justify-content: center; align-items: center; font-weight: bold; cursor: pointer; user-select: none; }
+        .cell:hover { background: #2a2a35; }
+        .cell.revealed { background: #0f0f15; border-color: #0f0f15; }
+        .cell.mine { background: #ff0055; color: white; }
+        .cell.flag { color: #00ffff; }
+        /* Colors for numbers 1-8 */
+        .c1 { color: #00ffff; } .c2 { color: #00ffaa; } .c3 { color: #ffff00; } .c4 { color: #ff8800; }
+        .c5 { color: #ff0055; } .c6 { color: #ff00aa; } .c7 { color: #aa00ff; } .c8 { color: #5500ff; }
+        .controls { margin-top: 20px; display: flex; gap: 10px; }
+        button { background: #00ffff; color: #000; border: none; padding: 10px 20px; font-family: inherit; font-weight: bold; cursor: pointer; border-radius: 4px; text-transform: uppercase; }
+        button:hover { background: #00cccc; }
+    </style>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Clear the board without detonating any hidden mines. Use logic and numerical clues to survive.">
+    <meta name="keywords" content="minesweeper, classic minesweeper, logic puzzle game, free online minesweeper, retro pc game">
+    <meta name="author" content="SilenVault">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://games.silenvault.com/Minesweeper/">
+    <meta property="og:title" content="Minesweeper - Classic Logic Puzzle | Play Free">
+    <meta property="og:description" content="Clear the board without detonating any hidden mines. Use logic and numerical clues to survive.">
+    <meta property="og:image" content="https://games.silenvault.com/assets/og-minesweeper.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://games.silenvault.com/Minesweeper/">
+    <meta property="twitter:title" content="Minesweeper - Classic Logic Puzzle | Play Free">
+    <meta property="twitter:description" content="Clear the board without detonating any hidden mines. Use logic and numerical clues to survive.">
+    <meta property="twitter:image" content="https://games.silenvault.com/assets/og-minesweeper.png">
+</head>
+<body>
+    <div class="header">
+        <span id="mines-count">00</span>
+        <span id="timer">000</span>
+    </div>
+    <div id="grid" class="grid"></div>
+    <div class="controls">
+        <button onclick="initGame(10, 10, 10)">Easy</button>
+        <button onclick="initGame(16, 16, 40)">Medium</button>
+    </div>
+
+    <script>
+        const gridEl = document.getElementById('grid');
+        const minesEl = document.getElementById('mines-count');
+        const timerEl = document.getElementById('timer');
+        
+        let rows = 10, cols = 10, mines = 10;
+        let board = [], revealedCount = 0, flags = 0, gameOver = false, startTime, timerInt;
+
+        function initGame(r = 10, c = 10, m = 10) {
+            rows = r; cols = c; mines = m;
+            board = []; revealedCount = 0; flags = 0; gameOver = false;
+            clearInterval(timerInt); timerEl.innerText = '000'; minesEl.innerText = mines.toString().padStart(2, '0');
+            
+            // Adjust cell size for mobile if needed
+            const cellSize = Math.min(30, (window.innerWidth - 40) / cols);
+            gridEl.style.gridTemplateColumns = `repeat(${cols}, ${cellSize}px)`;
+            gridEl.style.gridTemplateRows = `repeat(${rows}, ${cellSize}px)`;
+            gridEl.innerHTML = '';
+
+            for (let i = 0; i < rows; i++) {
+                board[i] = [];
+                for (let j = 0; j < cols; j++) {
+                    board[i][j] = { isMine: false, isRevealed: false, isFlagged: false, neighborMines: 0 };
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.style.width = `${cellSize}px`;
+                    cell.style.height = `${cellSize}px`;
+                    cell.dataset.r = i; cell.dataset.c = j;
+                    cell.addEventListener('click', () => reveal(i, j));
+                    cell.addEventListener('contextmenu', (e) => { e.preventDefault(); toggleFlag(i, j); });
+                    gridEl.appendChild(cell);
+                }
+            }
+            placeMines();
+            startTime = Date.now();
+            timerInt = setInterval(() => {
+                if(!gameOver) timerEl.innerText = Math.floor((Date.now() - startTime)/1000).toString().padStart(3, '0');
+            }, 1000);
+        }
+
+        function placeMines() {
+            let placed = 0;
+            while(placed < mines) {
+                let r = Math.floor(Math.random() * rows);
+                let c = Math.floor(Math.random() * cols);
+                if(!board[r][c].isMine) {
+                    board[r][c].isMine = true;
+                    placed++;
+                    // Update neighbors
+                    for(let dr=-1; dr<=1; dr++) {
+                        for(let dc=-1; dc<=1; dc++) {
+                            if(r+dr>=0 && r+dr<rows && c+dc>=0 && c+dc<cols) board[r+dr][c+dc].neighborMines++;
+                        }
+                    }
+                }
+            }
+        }
+
+        function toggleFlag(r, c) {
+            if(gameOver || board[r][c].isRevealed) return;
+            const cell = board[r][c];
+            cell.isFlagged = !cell.isFlagged;
+            const el = gridEl.children[r * cols + c];
+            el.innerHTML = cell.isFlagged ? '⚑' : '';
+            el.classList.toggle('flag');
+            flags += cell.isFlagged ? 1 : -1;
+            minesEl.innerText = (mines - flags).toString().padStart(2, '0');
+        }
+
+        function reveal(r, c) {
+            if(gameOver || board[r][c].isRevealed || board[r][c].isFlagged) return;
+            const cell = board[r][c];
+            cell.isRevealed = true;
+            revealedCount++;
+            
+            const el = gridEl.children[r * cols + c];
+            el.classList.add('revealed');
+
+            if(cell.isMine) {
+                el.classList.add('mine');
+                el.innerHTML = '☀';
+                endGame(false);
+                return;
+            }
+
+            if(cell.neighborMines > 0) {
+                el.innerHTML = cell.neighborMines;
+                el.classList.add(`c${cell.neighborMines}`);
+            } else {
+                for(let dr=-1; dr<=1; dr++) {
+                    for(let dc=-1; dc<=1; dc++) {
+                        if(r+dr>=0 && r+dr<rows && c+dc>=0 && c+dc<cols) reveal(r+dr, c+dc);
+                    }
+                }
+            }
+
+            if(revealedCount === rows * cols - mines) endGame(true);
+        }
+
+        function endGame(win) {
+            gameOver = true;
+            clearInterval(timerInt);
+            // Reveal all mines
+            for(let r=0; r<rows; r++) {
+                for(let c=0; c<cols; c++) {
+                    if(board[r][c].isMine) {
+                        const el = gridEl.children[r * cols + c];
+                        el.classList.add('revealed', 'mine');
+                        el.innerHTML = '☀';
+                    }
+                }
+            }
+            if(win) {
+                if(window.showToast) window.showToast('SECTOR CLEARED', '#00ff00');
+                let hs = parseInt(localStorage.getItem('minesweeper_score') || '999');
+                let time = Math.floor((Date.now() - startTime)/1000);
+                if(time < hs) localStorage.setItem('minesweeper_score', time);
+            } else {
+                if(window.showToast) window.showToast('CRITICAL FAILURE', '#ff0055');
+            }
+        }
+
+        initGame();
+    </script>
+</body>
+</html>

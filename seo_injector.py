@@ -58,6 +58,36 @@ GAMES = {
         "keywords": "pacman, pac-man browser game, classic arcade maze, retro pacman online, free pacman",
         "image": f"{DOMAIN}/assets/og-pacman.png"
     },
+    "Pong": {
+        "title": "Retro Pong - Classic Arcade Tennis | Play Free",
+        "description": "Play the original arcade classic Pong. Challenge the AI in this fast-paced digital tennis game.",
+        "keywords": "pong, classic pong, retro arcade tennis, free online pong, atari pong clone",
+        "image": f"{DOMAIN}/assets/og-pong.png"
+    },
+    "Minesweeper": {
+        "title": "Minesweeper - Classic Logic Puzzle | Play Free",
+        "description": "Clear the board without detonating any hidden mines. Use logic and numerical clues to survive.",
+        "keywords": "minesweeper, classic minesweeper, logic puzzle game, free online minesweeper, retro pc game",
+        "image": f"{DOMAIN}/assets/og-minesweeper.png"
+    },
+    "Match3": {
+        "title": "Neon Match-3 Puzzle Game | Play Online Free",
+        "description": "Swap the neon gems to create cascades of 3 or more. A fast-paced, relaxing Match-3 puzzle game.",
+        "keywords": "match 3 game, gem matching puzzle, candy crush clone, free match 3, online jewel puzzle",
+        "image": f"{DOMAIN}/assets/og-match3.png"
+    },
+    "Solitaire": {
+        "title": "Classic Solitaire (Klondike) | Play Free",
+        "description": "Play classic Klondike Solitaire directly in your browser. Relaxing, ad-free card game experience.",
+        "keywords": "solitaire, klondike solitaire, free online solitaire, classic card game, ad-free solitaire",
+        "image": f"{DOMAIN}/assets/og-solitaire.png"
+    },
+    "Bounce": {
+        "title": "Retro Bounce - Endless Platformer | Play Free",
+        "description": "Navigate the bouncing red ball through treacherous spikes and platforms in this retro endless runner.",
+        "keywords": "bounce game, nokia bounce clone, endless runner ball, retro platformer, red ball game",
+        "image": f"{DOMAIN}/assets/og-bounce.png"
+    },
     "Game-2048": {
         "title": "2048 - Classic Number Puzzle Game | Play Free",
         "description": "Play the incredibly addictive 2048 number puzzle game. Slide tiles to combine numbers and reach the 2048 tile.",

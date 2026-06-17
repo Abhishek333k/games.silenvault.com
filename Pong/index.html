@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Retro Pong - Classic Arcade Tennis | Play Free</title>
+    <link rel="stylesheet" href="../assets/toast.css">
+    <script src="../assets/toast.js"></script>
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; display: flex; justify-content: center; align-items: center; }
+        canvas { background: #000; border: 2px solid #fff; box-shadow: 0 0 15px rgba(255,255,255,0.2); }
+    </style>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Play the original arcade classic Pong. Challenge the AI in this fast-paced digital tennis game.">
+    <meta name="keywords" content="pong, classic pong, retro arcade tennis, free online pong, atari pong clone">
+    <meta name="author" content="SilenVault">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://games.silenvault.com/Pong/">
+    <meta property="og:title" content="Retro Pong - Classic Arcade Tennis | Play Free">
+    <meta property="og:description" content="Play the original arcade classic Pong. Challenge the AI in this fast-paced digital tennis game.">
+    <meta property="og:image" content="https://games.silenvault.com/assets/og-pong.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://games.silenvault.com/Pong/">
+    <meta property="twitter:title" content="Retro Pong - Classic Arcade Tennis | Play Free">
+    <meta property="twitter:description" content="Play the original arcade classic Pong. Challenge the AI in this fast-paced digital tennis game.">
+    <meta property="twitter:image" content="https://games.silenvault.com/assets/og-pong.png">
+</head>
+<body>
+    <canvas id="game"></canvas>
+    <script>
+        const canvas = document.getElementById('game');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let paddleWidth = 10, paddleHeight = 60, ballSize = 10;
+        let player = { x: 0, y: 0, score: 0 }, ai = { x: 0, y: 0, score: 0 }, ball = { x: 0, y: 0, dx: 0, dy: 0 };
+        let isGameOver = false;
+
+        function resize() {
+            width = canvas.width = Math.min(window.innerWidth * 0.9, 800);
+            height = canvas.height = Math.min(window.innerHeight * 0.8, 600);
+            paddleHeight = height * 0.15;
+            paddleWidth = width * 0.02;
+            ballSize = width * 0.015;
+            player.x = paddleWidth * 2;
+            ai.x = width - paddleWidth * 3;
+            player.y = height / 2 - paddleHeight / 2;
+            ai.y = height / 2 - paddleHeight / 2;
+            if(ball.dx === 0) resetBall();
+        }
+
+        function resetBall() {
+            ball.x = width / 2;
+            ball.y = height / 2;
+            ball.dx = (Math.random() > 0.5 ? 1 : -1) * (width * 0.005);
+            ball.dy = (Math.random() > 0.5 ? 1 : -1) * (height * 0.005);
+        }
+
+        window.addEventListener('resize', resize);
+        canvas.addEventListener('mousemove', e => {
+            const rect = canvas.getBoundingClientRect();
+            player.y = e.clientY - rect.top - paddleHeight / 2;
+        });
+        canvas.addEventListener('touchmove', e => {
+            e.preventDefault();
+            const rect = canvas.getBoundingClientRect();
+            player.y = e.touches[0].clientY - rect.top - paddleHeight / 2;
+        }, {passive: false});
+
+        function update() {
+            if(isGameOver) return;
+            
+            // AI
+            const aiCenter = ai.y + paddleHeight/2;
+            if (aiCenter < ball.y - 10) ai.y += height * 0.004;
+            else if (aiCenter > ball.y + 10) ai.y -= height * 0.004;
+
+            // Constrain paddles
+            player.y = Math.max(0, Math.min(height - paddleHeight, player.y));
+            ai.y = Math.max(0, Math.min(height - paddleHeight, ai.y));
+
+            // Ball move
+            ball.x += ball.dx;
+            ball.y += ball.dy;
+
+            // Wall bounce
+            if (ball.y <= 0 || ball.y + ballSize >= height) ball.dy *= -1;
+
+            // Paddle bounce
+            if (ball.x <= player.x + paddleWidth && ball.y + ballSize >= player.y && ball.y <= player.y + paddleHeight) {
+                ball.dx = Math.abs(ball.dx) * 1.05; // speed up slightly
+                ball.dy += (ball.y - (player.y + paddleHeight/2)) * 0.05; // apply spin
+            }
+            if (ball.x + ballSize >= ai.x && ball.y + ballSize >= ai.y && ball.y <= ai.y + paddleHeight) {
+                ball.dx = -Math.abs(ball.dx) * 1.05;
+                ball.dy += (ball.y - (ai.y + paddleHeight/2)) * 0.05;
+            }
+
+            // Score
+            if (ball.x < 0) { ai.score++; checkWin(); resetBall(); }
+            if (ball.x > width) { player.score++; checkWin(); resetBall(); }
+        }
+
+        function checkWin() {
+            if(player.score >= 10 || ai.score >= 10) {
+                isGameOver = true;
+                const msg = player.score >= 10 ? "VICTORY ACHIEVED" : "SYSTEM DEFEAT";
+                const color = player.score >= 10 ? "#00ff00" : "#ff0000";
+                if(window.showToast) window.showToast(msg, color);
+                
+                let hs = parseInt(localStorage.getItem('pong_score') || '0');
+                if(player.score > hs) localStorage.setItem('pong_score', player.score);
+
+                setTimeout(() => { player.score=0; ai.score=0; isGameOver=false; resetBall(); }, 4000);
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, width, height);
+            
+            // Net
+            ctx.setLineDash([10, 15]);
+            ctx.beginPath(); ctx.moveTo(width/2, 0); ctx.lineTo(width/2, height);
+            ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Scores
+            ctx.font = `${height*0.1}px "Courier New"`;
+            ctx.fillStyle = '#fff';
+            ctx.fillText(player.score, width*0.25, height*0.15);
+            ctx.fillText(ai.score, width*0.75, height*0.15);
+
+            // Paddles & Ball
+            ctx.fillRect(player.x, player.y, paddleWidth, paddleHeight);
+            ctx.fillRect(ai.x, ai.y, paddleWidth, paddleHeight);
+            ctx.fillRect(ball.x, ball.y, ballSize, ballSize);
+        }
+
+        function loop() { update(); draw(); requestAnimationFrame(loop); }
+        
+        resize();
+        loop();
+    </script>
+</body>
+</html>

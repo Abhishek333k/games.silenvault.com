@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Neon Match-3 Puzzle Game | Play Online Free</title>
+    <link rel="stylesheet" href="../assets/toast.css">
+    <script src="../assets/toast.js"></script>
+    <style>
+        body { margin: 0; padding: 20px; background: #050510; color: #fff; font-family: 'Courier New', Courier, monospace; display: flex; flex-direction: column; align-items: center; overflow: hidden; }
+        .header { display: flex; justify-content: space-between; width: 100%; max-width: 400px; margin-bottom: 20px; font-size: 1.5rem; font-weight: bold; color: #ff00aa; }
+        .grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; background: #1a1a24; padding: 8px; border-radius: 8px; box-shadow: 0 0 20px rgba(255, 0, 170, 0.2); width: 95vw; max-width: 400px; aspect-ratio: 1; }
+        .gem { width: 100%; height: 100%; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: transform 0.2s; box-shadow: inset -5px -5px 15px rgba(0,0,0,0.5), inset 5px 5px 15px rgba(255,255,255,0.5); }
+        .gem:hover { transform: scale(1.1); }
+        .gem.selected { transform: scale(1.2); box-shadow: 0 0 15px #fff; }
+    </style>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Swap the neon gems to create cascades of 3 or more. A fast-paced, relaxing Match-3 puzzle game.">
+    <meta name="keywords" content="match 3 game, gem matching puzzle, candy crush clone, free match 3, online jewel puzzle">
+    <meta name="author" content="SilenVault">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://games.silenvault.com/Match3/">
+    <meta property="og:title" content="Neon Match-3 Puzzle Game | Play Online Free">
+    <meta property="og:description" content="Swap the neon gems to create cascades of 3 or more. A fast-paced, relaxing Match-3 puzzle game.">
+    <meta property="og:image" content="https://games.silenvault.com/assets/og-match3.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://games.silenvault.com/Match3/">
+    <meta property="twitter:title" content="Neon Match-3 Puzzle Game | Play Online Free">
+    <meta property="twitter:description" content="Swap the neon gems to create cascades of 3 or more. A fast-paced, relaxing Match-3 puzzle game.">
+    <meta property="twitter:image" content="https://games.silenvault.com/assets/og-match3.png">
+</head>
+<body>
+    <div class="header">
+        <span>SCORE</span>
+        <span id="score">0</span>
+    </div>
+    <div id="grid" class="grid"></div>
+
+    <script>
+        const gridEl = document.getElementById('grid');
+        const scoreEl = document.getElementById('score');
+        const size = 8;
+        const colors = ['#ff0055', '#00d2ff', '#00ff00', '#ffff00', '#aa00ff'];
+        let board = [], score = 0, selected = null, isAnimating = false;
+
+        function init() {
+            gridEl.innerHTML = '';
+            for(let r=0; r<size; r++) {
+                board[r] = [];
+                for(let c=0; c<size; c++) {
+                    let color;
+                    do { color = colors[Math.floor(Math.random() * colors.length)]; } 
+                    while ((r>=2 && board[r-1][c].color===color && board[r-2][c].color===color) || 
+                           (c>=2 && board[r][c-1].color===color && board[r][c-2].color===color));
+                    board[r][c] = { color, el: createGem(r, c, color) };
+                }
+            }
+        }
+
+        function createGem(r, c, color) {
+            const el = document.createElement('div');
+            el.className = 'gem';
+            el.style.backgroundColor = color;
+            el.onclick = () => selectGem(r, c);
+            gridEl.appendChild(el);
+            return el;
+        }
+
+        async function selectGem(r, c) {
+            if(isAnimating) return;
+            if(!selected) {
+                selected = {r, c};
+                board[r][c].el.classList.add('selected');
+            } else {
+                board[selected.r][selected.c].el.classList.remove('selected');
+                const isAdjacent = Math.abs(selected.r - r) + Math.abs(selected.c - c) === 1;
+                if(isAdjacent) {
+                    await swap(selected.r, selected.c, r, c);
+                    const matches = findMatches();
+                    if(matches.length > 0) {
+                        await processMatches();
+                    } else {
+                        await swap(selected.r, selected.c, r, c); // swap back
+                    }
+                }
+                selected = null;
+            }
+        }
+
+        async function swap(r1, c1, r2, c2) {
+            const tempColor = board[r1][c1].color;
+            board[r1][c1].color = board[r2][c2].color;
+            board[r1][c1].el.style.backgroundColor = board[r2][c2].color;
+            board[r2][c2].color = tempColor;
+            board[r2][c2].el.style.backgroundColor = tempColor;
+            await new Promise(res => setTimeout(res, 200));
+        }
+
+        function findMatches() {
+            const matches = new Set();
+            // Horizontal
+            for(let r=0; r<size; r++) {
+                for(let c=0; c<size-2; c++) {
+                    const color = board[r][c].color;
+                    if(color && board[r][c+1].color===color && board[r][c+2].color===color) {
+                        matches.add(`${r},${c}`); matches.add(`${r},${c+1}`); matches.add(`${r},${c+2}`);
+                    }
+                }
+            }
+            // Vertical
+            for(let c=0; c<size; c++) {
+                for(let r=0; r<size-2; r++) {
+                    const color = board[r][c].color;
+                    if(color && board[r+1][c].color===color && board[r+2][c].color===color) {
+                        matches.add(`${r},${c}`); matches.add(`${r+1},${c}`); matches.add(`${r+2},${c}`);
+                    }
+                }
+            }
+            return Array.from(matches).map(m => { const pts=m.split(','); return {r: parseInt(pts[0]), c: parseInt(pts[1])}; });
+        }
+
+        async function processMatches() {
+            isAnimating = true;
+            let matches = findMatches();
+            while(matches.length > 0) {
+                // Remove matches
+                matches.forEach(({r, c}) => {
+                    board[r][c].color = null;
+                    board[r][c].el.style.backgroundColor = 'transparent';
+                    board[r][c].el.style.boxShadow = 'none';
+                    score += 10;
+                });
+                scoreEl.innerText = score;
+                await new Promise(res => setTimeout(res, 300));
+                
+                // Drop gems
+                for(let c=0; c<size; c++) {
+                    let emptySlots = 0;
+                    for(let r=size-1; r>=0; r--) {
+                        if(board[r][c].color === null) emptySlots++;
+                        else if(emptySlots > 0) {
+                            board[r+emptySlots][c].color = board[r][c].color;
+                            board[r+emptySlots][c].el.style.backgroundColor = board[r][c].color;
+                            board[r+emptySlots][c].el.style.boxShadow = '';
+                            board[r][c].color = null;
+                            board[r][c].el.style.backgroundColor = 'transparent';
+                            board[r][c].el.style.boxShadow = 'none';
+                        }
+                    }
+                    // Refill top
+                    for(let r=0; r<emptySlots; r++) {
+                        board[r][c].color = colors[Math.floor(Math.random() * colors.length)];
+                        board[r][c].el.style.backgroundColor = board[r][c].color;
+                        board[r][c].el.style.boxShadow = '';
+                    }
+                }
+                await new Promise(res => setTimeout(res, 300));
+                matches = findMatches();
+            }
+            isAnimating = false;
+            
+            // Win condition check
+            if (score >= 1000) {
+                let hs = parseInt(localStorage.getItem('match3_score') || '0');
+                if(score > hs) localStorage.setItem('match3_score', score);
+                if(window.showToast) window.showToast("CASCADING VICTORY", "#ff00aa");
+                setTimeout(() => { score=0; scoreEl.innerText='0'; init(); }, 3000);
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>
