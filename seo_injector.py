@@ -40,6 +40,30 @@ GAMES = {
         "keywords": "hacking simulator, command line game, terminal puzzle, cli browser game, hacker web game",
         "image": f"{DOMAIN}/assets/og-orbitterminal.png"
     },
+    "Game-2048": {
+        "title": "2048 - Classic Number Puzzle Game | Play Free",
+        "description": "Play the incredibly addictive 2048 number puzzle game. Slide tiles to combine numbers and reach the 2048 tile.",
+        "keywords": "2048, number puzzle game, math game, sliding puzzle browser game, free online 2048",
+        "image": f"{DOMAIN}/assets/og-2048.png"
+    },
+    "FloppyBird": {
+        "title": "Floppy Bird - Classic Arcade Runner | Play Free",
+        "description": "Play the notoriously difficult classic Flappy Bird clone directly in your browser. Tap to fly between pipes.",
+        "keywords": "flappy bird, floppy bird, arcade browser game, retro arcade runner, free online flappy",
+        "image": f"{DOMAIN}/assets/og-floppybird.png"
+    },
+    "Tetris": {
+        "title": "Tetris - Classic Block Puzzle Game | Play Online Free",
+        "description": "Play the legendary Tetris block falling puzzle game. Clear lines and survive as long as possible.",
+        "keywords": "tetris, block puzzle game, classic tetris browser, retro arcade puzzle, free online tetris",
+        "image": f"{DOMAIN}/assets/og-tetris.png"
+    },
+    "Asteroids": {
+        "title": "Asteroids - Classic Retro Space Shooter | Play Free",
+        "description": "Play Asteroids in your browser. Pilot your ship through an asteroid field and blast rocks into dust in this vector graphics classic.",
+        "keywords": "asteroids game, space shooter browser game, classic arcade shooter, retro vector graphics",
+        "image": f"{DOMAIN}/assets/og-asteroids.png"
+    },
     "DinoRunner": {
         "title": "Chrome Dinosaur Game Clone | Play Online Free",
         "description": "Play the classic offline T-Rex runner game directly in your browser. Jump over cacti and dodge pterodactyls.",

@@ -36,6 +36,26 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://games.silenvault.com/Game-2048/</loc>
+    <lastmod>2026-06-17</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://games.silenvault.com/FloppyBird/</loc>
+    <lastmod>2026-06-17</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://games.silenvault.com/Tetris/</loc>
+    <lastmod>2026-06-17</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://games.silenvault.com/Asteroids/</loc>
+    <lastmod>2026-06-17</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://games.silenvault.com/DinoRunner/</loc>
     <lastmod>2026-06-17</lastmod>
     <priority>0.8</priority>
