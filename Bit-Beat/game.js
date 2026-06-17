@@ -169,12 +169,20 @@ function playDeathSound() {
 
 // Window sizing
 function resize() {
-    width = window.innerWidth;
-    height = window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
+    const dpr = window.devicePixelRatio || 1;
+    const container = document.getElementById('game-container');
+    width = container ? container.clientWidth : window.innerWidth;
+    height = container ? container.clientHeight : window.innerHeight;
+    
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    canvas.style.width = width + 'px';
+    canvas.style.height = height + 'px';
+    
+    ctx.scale(dpr, dpr);
+    
     groundY = height * GROUND_Y_RATIO;
-    if (currentState === STATES.MENU) {
+    if (currentState === STATES.MENU || currentState === STATES.GAMEOVER) {
         player.y = groundY;
     }
 }
@@ -491,8 +499,21 @@ function draw() {
     ctx.restore();
 }
 
-function loop() {
-    update();
+let lastTime = 0;
+let accumulator = 0;
+const STEP = 1/60; // Lock logic to 60fps
+
+function loop(time = 0) {
+    let dt = (time - lastTime) / 1000;
+    if (dt > 0.25) dt = 0.25; // Prevent physics spiral on tab minimize
+    lastTime = time;
+    accumulator += dt;
+
+    while (accumulator >= STEP) {
+        update();
+        accumulator -= STEP;
+    }
+    
     draw();
     requestAnimationFrame(loop);
 }
