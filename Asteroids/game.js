@@ -612,7 +612,12 @@ Bullet = function () {
     this.currentNode = null;
   };
   this.transformedPoints = function (other) {
-    return [this.x, this.y];
+    // CCD: Interpolate path from previous frame to prevent high-speed tunneling
+    var prevX = this.x - this.vel.x;
+    var prevY = this.y - this.vel.y;
+    var midX = this.x - (this.vel.x * 0.5);
+    var midY = this.y - (this.vel.y * 0.5);
+    return [this.x, this.y, midX, midY, prevX, prevY];
   };
 
 };
@@ -1021,10 +1026,23 @@ Game = {
 
 $(function () {
   var canvas = $("#canvas");
-  Game.canvasWidth  = canvas.width();
-  Game.canvasHeight = canvas.height();
-
+  
+  // High-DPI Retina Scaling
+  var dpr = window.devicePixelRatio || 1;
+  var container = document.getElementById('game-container');
+  var cw = container ? container.clientWidth : 780;
+  var ch = container ? container.clientHeight : 540;
+  
+  canvas.attr("width", cw * dpr);
+  canvas.attr("height", ch * dpr);
+  canvas.css("width", cw + "px");
+  canvas.css("height", ch + "px");
+  
   var context = canvas[0].getContext("2d");
+  context.scale(dpr, dpr);
+
+  Game.canvasWidth  = cw;
+  Game.canvasHeight = ch;
 
   Text.context = context;
   Text.face = vector_battle;
@@ -1146,6 +1164,7 @@ $(function () {
     thisFrame = Date.now();
     elapsed = thisFrame - lastFrame;
     lastFrame = thisFrame;
+    if (elapsed > 100) elapsed = 100; // PREVENT MINIMIZE TAB SPIRAL
     delta = elapsed / 30;
 
     for (i = 0; i < sprites.length; i++) {
