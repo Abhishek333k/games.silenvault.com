@@ -1,0 +1,155 @@
+:root {
+    --bg-top: #a1c4fd;
+    --bg-bottom: #c2e9fb;
+    --accent: #ffffff;
+    --ui-text: #2c3e50;
+    --glass: rgba(255, 255, 255, 0.2);
+    --glass-border: rgba(255, 255, 255, 0.4);
+    --glow: rgba(255, 255, 255, 0.8);
+}
+
+* {
+    margin: 0; padding: 0; box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+    user-select: none;
+}
+
+body, html { width: 100%; height: 100%; overflow: hidden; background: #000; }
+
+#game-container { position: relative; width: 100vw; height: 100vh; }
+
+.sky-gradient {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to bottom, var(--bg-top), var(--bg-bottom));
+    z-index: -1; transition: background 2s ease;
+}
+
+#game-canvas { display: block; position: absolute; top: 0; left: 0; }
+
+#ui-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+
+/* Screens */
+.screen {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(161, 196, 253, 0.1); backdrop-filter: blur(10px);
+    transition: opacity 0.5s ease; pointer-events: auto; z-index: 20;
+}
+
+.menu-content { text-align: center; color: var(--ui-text); }
+
+.logo { 
+    font-family: 'Cinzel Decorative', cursive;
+    font-size: 6rem; 
+    letter-spacing: 1.5rem; 
+    color: white; 
+    text-shadow: 0 0 40px var(--glow); 
+    margin-bottom: 1rem;
+    animation: titleGlow 4s ease-in-out infinite;
+}
+
+@keyframes titleGlow {
+    0%, 100% { text-shadow: 0 0 30px rgba(255,255,255,0.4); transform: scale(1); }
+    50% { text-shadow: 0 0 60px rgba(255,255,255,0.9); transform: scale(1.02); }
+}
+
+.tagline { 
+    font-family: 'Syncopate', sans-serif;
+    opacity: 0.6; 
+    letter-spacing: 0.6rem; 
+    text-transform: uppercase; 
+    margin-bottom: 2rem;
+    font-weight: 400;
+}
+
+.mission-briefing {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 1.5rem;
+    border-radius: 20px;
+    margin-bottom: 2.5rem;
+    text-align: left;
+    max-width: 500px;
+    margin-left: auto; margin-right: auto;
+    backdrop-filter: blur(15px);
+    color: var(--ui-text);
+}
+.mission-briefing p {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin-bottom: 0.8rem;
+    opacity: 0.9;
+    font-weight: 600;
+}
+.mission-briefing p:last-child { margin-bottom: 0; }
+
+/* HUD */
+#game-hud {
+    position: absolute; top: 0; width: 100%; padding: 2.5rem;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    pointer-events: none; z-index: 15;
+}
+
+#game-info { pointer-events: none; }
+#game-title { 
+    font-family: 'Cinzel Decorative', cursive;
+    font-weight: 700; 
+    font-size: 1.5rem; 
+    letter-spacing: 0.5rem; 
+    color: white; 
+    opacity: 0.9; 
+    margin-bottom: 0.5rem; 
+}
+
+#stats { display: flex; gap: 1.5rem; }
+.stat-box {
+    font-family: 'Syncopate', sans-serif;
+    background: var(--glass); backdrop-filter: blur(15px);
+    border: 1px solid var(--glass-border); padding: 0.6rem 1.5rem;
+    border-radius: 50px; color: white; font-weight: 700; font-size: 0.75rem;
+    letter-spacing: 0.1rem;
+}
+
+#hud-controls { display: flex; gap: 1rem; pointer-events: auto; }
+.icon-btn {
+    background: var(--glass); border: 1px solid var(--glass-border);
+    border-radius: 50%; width: 48px; height: 48px; color: white;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s ease;
+}
+.icon-btn:hover { background: white; color: var(--ui-text); transform: scale(1.1); }
+
+/* Buttons */
+.primary-btn, .secondary-btn {
+    display: block; width: 260px; margin: 1rem auto; padding: 1.2rem;
+    border: 1px solid var(--glass-border); border-radius: 60px;
+    background: white; color: var(--ui-text); cursor: pointer;
+    font-size: 1rem; letter-spacing: 0.1rem; transition: all 0.3s ease;
+}
+.primary-btn:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+.secondary-btn { background: transparent; color: white; }
+
+/* Settings */
+.settings-panel {
+    background: rgba(255,255,255,0.9); padding: 3rem; border-radius: 30px;
+    min-width: 400px; color: #2c3e50;
+}
+.setting-item { display: flex; justify-content: space-between; align-items: center; margin: 1.5rem 0; font-weight: 600; }
+
+/* States */
+.hidden { opacity: 0 !important; pointer-events: none !important; }
+#fade-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: white; opacity: 0; z-index: 100; pointer-events: none; }
+
+.gold-text {
+    color: #ffd700 !important;
+    text-shadow: 0 0 50px rgba(255, 215, 0, 0.8) !important;
+}
+
+.sky-gold {
+    background: linear-gradient(to bottom, #ffd700, #fff) !important;
+}
+
+#overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; pointer-events: none; }
+#overlay h2 { font-size: 4rem; color: white; text-shadow: 0 0 20px var(--glow); letter-spacing: 1rem; font-weight: 300; }
+
+#instructions { position: absolute; bottom: 3rem; width: 100%; text-align: center; color: white; opacity: 0.5; font-size: 0.8rem; pointer-events: none; }

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumina | Deep Sea Odyssey</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="game-canvas"></canvas>
+        
+        <div id="ui-layer">
+            <!-- HUD -->
+            <header id="hud" class="hidden">
+                <div class="stat-group">
+                    <span class="label">ENERGY</span>
+                    <div class="energy-bar-container">
+                        <div id="energy-fill"></div>
+                    </div>
+                </div>
+                <div class="stat-group">
+                    <span class="label">SCORE</span>
+                    <span id="score" class="value">000000</span>
+                </div>
+                <div class="stat-group">
+                    <span class="label">BEST</span>
+                    <span id="best-score" class="value">000000</span>
+                </div>
+                <button id="pause-btn" title="Pause">⏸</button>
+            </header>
+
+            <!-- Main Menu -->
+            <section id="main-menu" class="screen">
+                <div class="content">
+                    <h1 class="logo">LUMINA</h1>
+                    <p class="subtitle">DEEP SEA ODYSSEY</p>
+                    <div class="mission-briefing">
+                        <p>MISSION: Guide your bioluminescent probe through the abyssal trench.</p>
+                        <p>CONTROLS: Move mouse to guide the probe • Evade shadow entities.</p>
+                        <p>ENERGY: Your battery decays over time. Collect glow-shards to replenish light radius.</p>
+                    </div>
+                    <button id="start-btn" class="neon-btn">INITIALIZE DESCENT</button>
+                </div>
+            </section>
+
+            <!-- Pause Screen -->
+            <section id="pause-screen" class="screen hidden">
+                <div class="content">
+                    <h1 class="logo">PAUSED</h1>
+                    <button id="resume-btn" class="neon-btn">RESUME MISSION</button>
+                </div>
+            </section>
+
+            <!-- Game Over Screen -->
+            <section id="gameover-screen" class="screen hidden">
+                <div class="content">
+                    <h1 class="logo">SIGNAL LOST</h1>
+                    <p class="subtitle">PROBE ENERGY DEPLETED</p>
+                    <div class="mission-briefing">
+                        <p id="final-stats">FINAL DEPTH REACHED</p>
+                    </div>
+                    <button id="restart-btn" class="neon-btn">REDEPLOY PROBE</button>
+                </div>
+            </section>
+        </div>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html>

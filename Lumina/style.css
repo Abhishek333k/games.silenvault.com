@@ -1,0 +1,171 @@
+:root {
+    --bg-dark: #020205;
+    --neon-cyan: #00e5ff;
+    --neon-green: #00ffcc;
+    --glass: rgba(255, 255, 255, 0.05);
+    --glass-heavy: rgba(2, 2, 5, 0.9);
+}
+
+* {
+    margin: 0; padding: 0; box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+}
+
+body, html {
+    width: 100%; height: 100%;
+    background-color: var(--bg-dark);
+    color: white;
+    overflow: hidden;
+    cursor: auto;
+}
+
+#game-container {
+    position: relative;
+    width: 100vw; height: 100vh;
+    background: #010103;
+    overflow: hidden;
+}
+
+#game-canvas {
+    display: block;
+    position: absolute; top: 0; left: 0;
+    z-index: 1;
+}
+
+#ui-layer {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* Screens */
+.screen {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--glass-heavy);
+    backdrop-filter: blur(15px);
+    pointer-events: auto;
+    transition: opacity 0.4s ease, visibility 0.4s;
+    z-index: 100;
+}
+
+.content { 
+    text-align: center; 
+    max-width: 600px;
+    padding: 2rem;
+}
+
+.logo {
+    font-family: 'Outfit', sans-serif;
+    font-size: 5rem;
+    font-weight: 900;
+    letter-spacing: 0.8rem;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 30px var(--neon-cyan);
+    background: linear-gradient(135deg, var(--neon-cyan), var(--neon-green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.subtitle { letter-spacing: 0.6rem; opacity: 0.6; font-size: 0.9rem; margin-bottom: 2rem; text-transform: uppercase; }
+
+.mission-briefing {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 2.5rem;
+    text-align: left;
+    max-width: 500px;
+    margin-left: auto; margin-right: auto;
+    backdrop-filter: blur(10px);
+}
+.mission-briefing p {
+    font-size: 0.8rem;
+    line-height: 1.6;
+    margin-bottom: 0.8rem;
+    opacity: 0.8;
+    color: #fff;
+    font-weight: 300;
+}
+.mission-briefing p:last-child { margin-bottom: 0; }
+
+/* HUD */
+#hud {
+    position: absolute; top: 0; left: 0; width: 100%;
+    padding: 1.5rem 3rem;
+    display: flex; justify-content: space-between;
+    align-items: center;
+    z-index: 50;
+    pointer-events: none;
+}
+
+.stat-group { display: flex; flex-direction: column; align-items: center; }
+.label { font-size: 0.7rem; letter-spacing: 0.2rem; opacity: 0.4; margin-bottom: 0.3rem; }
+.value { font-size: 1.8rem; font-weight: 900; color: #fff; }
+
+.energy-bar-container {
+    width: 180px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#energy-fill {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--neon-cyan), var(--neon-green));
+    transition: width 0.1s ease;
+}
+
+#pause-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s;
+    height: 40px; width: 40px;
+    display: flex; align-items: center; justify-content: center;
+    pointer-events: auto;
+}
+
+#pause-btn:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: var(--neon-cyan);
+}
+
+/* Buttons */
+.neon-btn {
+    padding: 1.2rem 3rem;
+    background: transparent;
+    border: 2px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.3rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.1);
+}
+
+.neon-btn:hover {
+    background: var(--neon-cyan);
+    color: var(--bg-dark);
+    box-shadow: 0 0 40px var(--neon-cyan);
+    transform: scale(1.05) translateY(-5px);
+}
+
+.hidden { 
+    opacity: 0 !important; 
+    visibility: hidden !important; 
+    pointer-events: none !important; 
+}

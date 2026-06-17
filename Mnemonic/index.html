@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mnemonic: The Digital Ghost</title>
+    
+    <!-- SEO Metadata -->
+    <meta name="description" content="Infiltrate secure mainframe networks in Mnemonic: The Digital Ghost. Route glowing data streams and solve logic gate puzzles in this cyberpunk hacker simulator.">
+    <meta name="keywords" content="Mnemonic, Hacking Game, Logic Gates, Cyberpunk Puzzle, Neon Grid, Indie Game">
+    <link rel="canonical" href="https://mnemonic.pages.dev/">
+
+    <!-- OpenGraph -->
+    <meta property="og:title" content="Mnemonic: The Digital Ghost">
+    <meta property="og:description" content="Connect the neon pathways, trigger the logic gates, and hack the corporate mainframe.">
+    <meta property="og:image" content="../assets/mnemonic_preview.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;900&family=Syncopate:wght@700&family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="game-canvas"></canvas>
+
+        <div id="ui-layer">
+            <!-- HUD -->
+            <header id="hud" class="hidden">
+                <div class="hud-panel left">
+                    <span class="hud-label">SYSTEM STATE</span>
+                    <span class="hud-value neon-cyan" id="status-text">DECRYPTING...</span>
+                </div>
+                <div class="hud-panel center">
+                    <span class="hud-label">FIREWALL DETECT</span>
+                    <div class="firewall-bar-container">
+                        <div id="firewall-fill" style="width: 0%;"></div>
+                    </div>
+                    <span class="hud-value neon-red" id="firewall-text">0%</span>
+                </div>
+                <div class="hud-panel right">
+                    <span class="hud-label">LOGIC SECTORS DECRYPTED</span>
+                    <span class="hud-value neon-green" id="score">00</span>
+                </div>
+            </header>
+
+            <!-- Start Menu -->
+            <section id="main-menu" class="screen">
+                <div class="glass-panel">
+                    <h1 class="logo glitch" data-text="MNEMONIC">MNEMONIC</h1>
+                    <p class="tagline">THE DIGITAL GHOST</p>
+                    
+                    <div class="mission-briefing">
+                        <div class="briefing-header">SYS_LOG_INFILTRATION</div>
+                        <p>MISSION: Align the routing conduits and logic gates to stream energy from the SECURE SOURCE to the TARGET MAINFRAME.</p>
+                        <p>CONTROLS: Left click nodes to rotate clockwise. Establish a complete, valid path to inject the payload.</p>
+                        <p>WARNING: Firewall traces your decryption attempts. Every rotation triggers security alerts, accelerating lockdown.</p>
+                        <p>LEGEND: <span class="neon-red">● Pink Sockets</span> are input ports; <span class="neon-cyan">▲ Cyan Arrows</span> are output ports.</p>
+                    </div>
+
+                    <button id="start-btn" class="glow-button green">INITIALIZE INJECTOR</button>
+                </div>
+            </section>
+
+            <!-- Pause Screen -->
+            <section id="pause-screen" class="screen hidden">
+                <div class="glass-panel">
+                    <h2 class="neon-cyan">SYS_HOLD_CONNECTED</h2>
+                    <button id="resume-btn" class="glow-button cyan">RESUME HACK</button>
+                    <p class="hint">Press [Space] to pause / resume</p>
+                </div>
+            </section>
+
+            <!-- Overlay for Level Completed / Decrypting -->
+            <div id="overlay" class="hidden">
+                <h2 id="overlay-text" class="neon-green">GATE_DECRYPTED</h2>
+                <p id="overlay-subtext">INJECTING DATA PACKETS...</p>
+            </div>
+
+            <!-- Game Over Screen -->
+            <div id="game-over-screen" class="screen hidden">
+                <div class="glass-panel">
+                    <h1 class="neon-red glitch" data-text="SYSTEM_LOCKED">SYSTEM LOCKOUT</h1>
+                    <p class="tagline red-text">CONNECTION TERMINATED BY HOST FIREWALL</p>
+                    <div class="record-box">
+                        <span class="record-label">SECTORS DECRYPTED:</span>
+                        <span class="record-value" id="final-score">00</span>
+                    </div>
+                    <button id="restart-btn" class="glow-button red">REBOOT BYPASS</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>

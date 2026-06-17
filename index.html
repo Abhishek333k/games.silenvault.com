@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pegasus Arcade | Game Vault</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;900&family=Syncopate:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #00d2ff;
+            --bg: #050508;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
+
+        body {
+            background-color: var(--bg);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: background 0.8s ease;
+        }
+
+        /* Dynamic Background Nebula */
+        .nebula-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(0, 210, 255, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+            z-index: -1;
+            filter: blur(80px);
+            transition: all 1s ease;
+        }
+
+        header {
+            padding: 5rem 0 3rem;
+            text-align: center;
+        }
+
+        .logo {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 3rem;
+            letter-spacing: 1.2rem;
+            font-weight: 700;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+            margin-bottom: 0.5rem;
+        }
+
+        .system-status {
+            font-size: 0.7rem;
+            letter-spacing: 0.5rem;
+            opacity: 0.4;
+            text-transform: uppercase;
+        }
+
+        #game-vault {
+            display: flex;
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1400px;
+            width: 100%;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .game-tile {
+            position: relative;
+            width: 320px;
+            height: 500px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(10px);
+        }
+
+        .game-tile:hover {
+            transform: scale(1.05) translateY(-10px);
+            border-color: var(--game-color);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 30px var(--game-color-alpha);
+        }
+
+        .tile-art {
+            height: 60%;
+            width: 100%;
+            background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.8) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .tile-art i {
+            font-size: 4rem;
+            filter: drop-shadow(0 0 15px var(--game-color));
+        }
+
+        .tile-content {
+            padding: 2rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .game-title {
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: 0.1rem;
+            text-transform: uppercase;
+        }
+
+        .game-meta {
+            font-size: 0.7rem;
+            letter-spacing: 0.1rem;
+            opacity: 0.5;
+            margin-top: 0.3rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .game-desc {
+            font-size: 0.8rem;
+            line-height: 1.6;
+            opacity: 0.7;
+            margin-bottom: 2rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .game-records {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .record-item {
+            font-size: 0.65rem;
+            letter-spacing: 0.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--game-color);
+            font-weight: 900;
+        }
+
+        .play-hint {
+            font-size: 0.8rem;
+            font-weight: 900;
+            letter-spacing: 0.3rem;
+            color: var(--game-color);
+            text-align: right;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .game-tile:hover .play-hint {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 3rem;
+            opacity: 0.2;
+            font-size: 0.6rem;
+            letter-spacing: 0.3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="nebula-bg" id="nebula"></div>
+    
+    <header>
+        <h1 class="logo">PEGASUS</h1>
+        <p class="system-status">ACTIVE GAME VAULT</p>
+    </header>
+
+    <div id="game-vault">
+        <!-- Game Tiles Injected Here -->
+    </div>
+
+    <footer>PEGASUS ARCHITECTURE • v2.1</footer>
+
+    <script>
+        const GAMES = [
+            {
+                id: 'aetheria',
+                title: 'Aetheria',
+                tagline: 'ZEN DRIFT ENGINE',
+                color: '#8b5cf6',
+                colorAlpha: 'rgba(139, 92, 246, 0.3)',
+                icon: '✧',
+                path: 'Aetheria/index.html',
+                desc: 'Experience kinetic flow in a crystalline void. Drift between procedurally generated islands and collect sky fragments to maintain your ascension. A masterclass in momentum and grace.',
+                stats: [{ label: 'RECORD DRIFT', key: 'aetheria_drift_record' }]
+            },
+            {
+                id: 'vipergrid',
+                title: 'Viper Grid',
+                tagline: 'NEON STRIKE',
+                color: '#00d2ff',
+                colorAlpha: 'rgba(0, 210, 255, 0.3)',
+                icon: '▣',
+                path: 'ViperGrid/index.html',
+                desc: 'A tactical cosmic brick breaker. Shatter reinforced glass arrays using thermal lasers and multi-ball protocols. Navigate through three difficulty phases: Zen, Classic, and Hardcore.',
+                stats: [
+                    { label: 'TOP ENERGY', key: 'viper_high_score' },
+                    { label: 'MAX PHASE', key: 'viper_max_level' }
+                ]
+            },
+            {
+                id: 'igniszero',
+                title: 'Ignis Zero',
+                tagline: 'THERMAL SURVIVAL',
+                color: '#ff4d00',
+                colorAlpha: 'rgba(255, 77, 0, 0.3)',
+                icon: '▲',
+                path: 'IgnisZero/index.html',
+                desc: 'Keep your core burning in an obsidian frost-void. Every second drains your heat. Absorb frost shards to fuel your fire, but avoid the freezing touch of the Obsidian Sentinels.',
+                stats: [{ label: 'MAX ABSORPTION', key: 'ignis_high_score' }]
+            },
+            {
+                id: 'shiftprotocol',
+                title: 'Shift Protocol',
+                tagline: 'DIMENSIONAL STEALTH',
+                color: '#ff00ff',
+                colorAlpha: 'rgba(255, 0, 255, 0.3)',
+                icon: '◆',
+                path: 'ShiftProtocol/index.html',
+                desc: 'Infiltrate a dual-layered neural network. Phase-shift between Alpha and Omega dimensions to bypass security walls and hack nodes. What is out of phase cannot hurt you.',
+                stats: [{ label: 'NODES SECURED', key: 'shift_high_score' }]
+            },
+            {
+                id: 'orbitterminal',
+                title: 'Orbit Terminal',
+                tagline: 'GRAVITY SLINGSHOT',
+                color: '#ffd700',
+                colorAlpha: 'rgba(255, 215, 0, 0.3)',
+                icon: '○',
+                path: 'OrbitTerminal/index.html',
+                desc: 'Master the laws of orbital mechanics. Click and drag to launch your craft into the deep void. Use the gravitational pull of planets to curve your path toward the target node.',
+                stats: [{ label: 'DELIVERIES', key: 'orbit_high_score' }]
+            },
+            {
+                id: 'prismshift',
+                title: 'Prism Shift',
+                tagline: 'OPTIC LOGIC',
+                color: '#10b981',
+                colorAlpha: 'rgba(16, 185, 129, 0.3)',
+                icon: '▽',
+                path: 'PrismShift/index.html',
+                desc: 'Calibrate the light array of the Pegasus Engine. Click and rotate crystalline prisms to reflect and align high-energy laser beams into the central light well.',
+                stats: [{ label: 'PUZZLES SOLVED', key: 'prism_high_score' }]
+            },
+            {
+                id: 'mnemonic',
+                title: 'Mnemonic',
+                tagline: 'LOGIC INJECTOR',
+                color: '#39ff14',
+                colorAlpha: 'rgba(57, 255, 20, 0.3)',
+                icon: '⚿',
+                path: 'Mnemonic/index.html',
+                desc: 'Infiltrate secure mainframe networks. Align logic routing conduits and rotate gates to direct data pulses from source nodes to the central target core.',
+                stats: [{ label: 'SECTORS HACKED', key: 'mnemonic_high_score' }]
+            },
+            {
+                id: 'lumina',
+                title: 'Lumina',
+                tagline: 'DEEP SEA ODYSSEY',
+                color: '#00e5ff',
+                colorAlpha: 'rgba(0, 229, 255, 0.3)',
+                icon: '❄',
+                path: 'Lumina/index.html',
+                desc: 'Guide your bioluminescent probe through the deep ocean abyss. Collect glow-shards to sustain your fading power reserve while evading shadow creatures.',
+                stats: [{ label: 'MAX DEPTH', key: 'lumina_high_score' }]
+            },
+            {
+                id: 'bitbeat',
+                title: 'Bit-Beat',
+                tagline: 'RHYTHM RUNNER',
+                color: '#ff007f',
+                colorAlpha: 'rgba(255, 0, 127, 0.3)',
+                icon: '⚡',
+                path: 'Bit-Beat/index.html',
+                desc: 'Boot the digital audio sequence stream. Dodge neon gate obstacles in perfect synchronization with synthesized high-frequency kick-drum loops.',
+                stats: [{ label: 'DATA CAPTURED', key: 'bitbeat_high_score' }]
+            }
+        ];
+
+        function renderVault() {
+            const vault = document.getElementById('game-vault');
+            const nebula = document.getElementById('nebula');
+
+            vault.innerHTML = GAMES.map(game => {
+                const statsHtml = game.stats.map(s => `
+                    <div class="record-item">${s.label}: ${localStorage.getItem(s.key) || '0'}</div>
+                `).join('');
+
+                return `
+                    <a href="${game.path}" class="game-tile" 
+                       style="--game-color: ${game.color}; --game-color-alpha: ${game.colorAlpha}"
+                       onmouseenter="updateBg('${game.color}')"
+                       onmouseleave="resetBg()">
+                        <div class="tile-art">
+                            <span style="font-size: 5rem; filter: drop-shadow(0 0 20px ${game.color})">${game.icon}</span>
+                        </div>
+                        <div class="tile-content">
+                            <div>
+                                <div class="game-title">${game.title}</div>
+                                <div class="game-meta">${game.tagline}</div>
+                                <div class="game-desc">${game.desc}</div>
+                                <div class="game-records">${statsHtml}</div>
+                            </div>
+                            <div class="play-hint">PLAY MISSION</div>
+                        </div>
+                    </a>
+                `;
+            }).join('');
+        }
+
+        function updateBg(color) {
+            document.getElementById('nebula').style.background = `
+                radial-gradient(circle at 50% 50%, ${color}22 0%, transparent 70%)
+            `;
+            document.body.style.background = '#020205';
+        }
+
+        function resetBg() {
+            document.getElementById('nebula').style.background = '';
+            document.body.style.background = '';
+        }
+
+        renderVault();
+    </script>
+</body>
+</html>

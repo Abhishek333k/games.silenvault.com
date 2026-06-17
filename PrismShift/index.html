@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prism Shift | Optic Reflection</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Outfit:wght@300;600;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="game-canvas"></canvas>
+        
+        <div id="ui-layer">
+            <header id="hud" class="hidden">
+                <div class="stat-group">
+                    <span class="label">REFRACTION</span>
+                    <span id="status" class="value">STABLE</span>
+                </div>
+                <div class="stat-group">
+                    <span class="label">PUZZLES</span>
+                    <span id="score" class="value">00</span>
+                </div>
+            </header>
+
+            <section id="main-menu" class="screen">
+                <div class="content">
+                    <h1 class="logo">PRISM<br><span class="highlight">SHIFT</span></h1>
+                    <p class="subtitle">OPTIC LOGIC ENGINE</p>
+                    <div class="mission-briefing">
+                        <p>MISSION: Align the high-energy laser array.</p>
+                        <p>CONTROLS: Click prisms to rotate 45 degrees.</p>
+                        <p>LOGIC: Guide the beam from the source to the Green Light Well. Use spatial logic to calculate the angle of reflection.</p>
+                    </div>
+                    <button id="start-btn" class="neon-btn">BOOT SYSTEM</button>
+                    <div class="controls-hint">
+                        CLICK PRISMS TO ROTATE • ALIGN THE BEAM • HIT THE WELL
+                    </div>
+                </div>
+            </section>
+
+            <div id="overlay" class="hidden">
+                <h2 id="overlay-text">ARRAY ALIGNED</h2>
+            </div>
+        </div>
+    </div>
+    <script src="game.js" type="module"></script>
+</body>
+</html>

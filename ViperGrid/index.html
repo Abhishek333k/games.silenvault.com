@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brick Breaker | Classic Edition</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="game-canvas"></canvas>
+        
+        <div id="ui-layer">
+            <!-- HUD -->
+            <header id="hud" class="hidden">
+                <div class="stat-group">
+                    <span class="label">LEVEL</span>
+                    <span id="level" class="value">01</span>
+                </div>
+                <div class="stat-group">
+                    <span class="label">SCORE</span>
+                    <span id="score" class="value">000000</span>
+                </div>
+                <div class="stat-group">
+                    <span class="label">LIVES</span>
+                    <span id="lives" class="value">03</span>
+                </div>
+                <button id="fullscreen-btn" title="Toggle Fullscreen">⛶</button>
+            </header>
+
+            <!-- Main Menu -->
+            <section id="main-menu" class="screen">
+                <div class="content">
+                    <h1 class="logo">BRICK<br><span class="highlight">BREAKER</span></h1>
+                    <p class="subtitle">COSMIC EDITION</p>
+                    <div class="mission-briefing">
+                        <p>MISSION: Shatter reinforced glass arrays in deep space.</p>
+                        <p>CONTROLS: Mouse to move paddle • Left-Click to launch ball & fire lasers • Space to Pause.</p>
+                        <p>PHASES: Collect power-ups to expand paddle, multiply balls, or weaponize your platform.</p>
+                    </div>
+                    <div class="menu-actions">
+                        <button id="start-btn" class="neon-btn">CLASSIC STRIKE</button>
+                        <div class="alt-modes">
+                            <button id="zen-btn" class="secondary-btn">ZEN MODE</button>
+                            <button id="hardcore-btn" class="secondary-btn">HARDCORE</button>
+                        </div>
+                    </div>
+
+                    <div class="controls-hint">
+                        MOUSE TO MOVE • CLICK TO LAUNCH • SPACE TO PAUSE
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pause Screen -->
+            <section id="pause-screen" class="screen hidden">
+                <div class="content">
+                    <h1 class="logo">PAUSED</h1>
+                    <button id="resume-btn" class="neon-btn">RESUME</button>
+                </div>
+            </section>
+
+            <!-- Overlay Message -->
+            <div id="message-overlay" class="hidden">
+                <h2 id="message-text">LEVEL CLEAR</h2>
+            </div>
+        </div>
+    </div>
+    <script src="game.js" type="module"></script>
+</body>
+</html>

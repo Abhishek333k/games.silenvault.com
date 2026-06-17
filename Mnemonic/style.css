@@ -1,0 +1,385 @@
+:root {
+    --accent-cyan: #00f2ff;
+    --accent-green: #39ff14;
+    --accent-red: #ff0055;
+    --bg-dark: #020205;
+    --glass-bg: rgba(5, 5, 12, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-glow: rgba(0, 242, 255, 0.05);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: var(--bg-dark);
+    font-family: 'Outfit', sans-serif;
+    color: #ffffff;
+}
+
+#game-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#game-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+#ui-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* Enable pointer events only for interactive UI boxes */
+.screen, header, #overlay {
+    pointer-events: auto;
+}
+
+/* Glass Panels */
+.glass-panel {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 3rem;
+    width: 90%;
+    max-width: 650px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 0 20px var(--glass-glow);
+    animation: panel-glow 4s infinite alternate;
+}
+
+@keyframes panel-glow {
+    0% { box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 242, 255, 0.03); }
+    100% { box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 0 35px rgba(0, 242, 255, 0.08); }
+}
+
+/* Screens Layout */
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(2, 2, 5, 0.85);
+    z-index: 100;
+    transition: opacity 0.5s ease, visibility 0.5s;
+}
+
+.screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* Typography & Logo */
+.logo {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    letter-spacing: 0.8rem;
+    margin-bottom: 0.5rem;
+    color: #ffffff;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.tagline {
+    font-size: 0.8rem;
+    letter-spacing: 0.4rem;
+    opacity: 0.6;
+    margin-bottom: 2.5rem;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.red-text {
+    color: var(--accent-red);
+    opacity: 0.9;
+}
+
+/* HUD Styling */
+header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1fr;
+    padding: 1.5rem 3rem;
+    background: linear-gradient(to bottom, rgba(2, 2, 5, 0.9) 0%, transparent 100%);
+    z-index: 50;
+    align-items: center;
+}
+
+header.hidden {
+    display: none;
+}
+
+.hud-panel {
+    display: flex;
+    flex-direction: column;
+}
+
+.hud-panel.left { align-items: flex-start; }
+.hud-panel.center { align-items: center; }
+.hud-panel.right { align-items: flex-end; }
+
+.hud-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.2rem;
+    opacity: 0.4;
+    font-weight: 900;
+    margin-bottom: 0.3rem;
+}
+
+.hud-value {
+    font-family: 'Fira Code', monospace;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+/* Firewall Progress Bar */
+.firewall-bar-container {
+    width: 100%;
+    max-width: 250px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#firewall-fill {
+    height: 100%;
+    background: linear-gradient(to right, var(--accent-cyan), var(--accent-red));
+    box-shadow: 0 0 10px var(--accent-red);
+    transition: width 0.3s ease;
+}
+
+/* Neon Glow Texts */
+.neon-cyan { color: var(--accent-cyan); text-shadow: 0 0 10px rgba(0, 242, 255, 0.5); }
+.neon-green { color: var(--accent-green); text-shadow: 0 0 10px rgba(57, 255, 20, 0.5); }
+.neon-red { color: var(--accent-red); text-shadow: 0 0 10px rgba(255, 0, 85, 0.5); }
+
+/* Mission Briefing Box */
+.mission-briefing {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 1.5rem;
+    text-align: left;
+    margin-bottom: 2.5rem;
+    font-size: 0.85rem;
+    line-height: 1.6;
+}
+
+.briefing-header {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.75rem;
+    color: var(--accent-cyan);
+    margin-bottom: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1rem;
+}
+
+.mission-briefing p {
+    margin-bottom: 0.8rem;
+    opacity: 0.7;
+}
+.mission-briefing p:last-child {
+    margin-bottom: 0;
+}
+
+/* Glow Buttons */
+.glow-button {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.2rem;
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.2, 1, 0.3, 1);
+    outline: none;
+}
+
+.glow-button.green {
+    border: 1px solid var(--accent-green);
+    color: var(--accent-green);
+}
+.glow-button.green:hover {
+    background: var(--accent-green);
+    color: #000000;
+    box-shadow: 0 0 30px var(--accent-green);
+    transform: scale(1.05);
+}
+
+.glow-button.cyan {
+    border: 1px solid var(--accent-cyan);
+    color: var(--accent-cyan);
+}
+.glow-button.cyan:hover {
+    background: var(--accent-cyan);
+    color: #000000;
+    box-shadow: 0 0 30px var(--accent-cyan);
+    transform: scale(1.05);
+}
+
+.glow-button.red {
+    border: 1px solid var(--accent-red);
+    color: var(--accent-red);
+}
+.glow-button.red:hover {
+    background: var(--accent-red);
+    color: #ffffff;
+    box-shadow: 0 0 30px var(--accent-red);
+    transform: scale(1.05);
+}
+
+.hint {
+    font-size: 0.75rem;
+    opacity: 0.4;
+    letter-spacing: 0.1rem;
+    margin-top: 1.5rem;
+}
+
+/* Overlay Screen */
+#overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 40;
+    transition: opacity 0.3s ease;
+}
+
+#overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#overlay h2 {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 2.5rem;
+    letter-spacing: 0.4rem;
+    margin-bottom: 0.5rem;
+}
+
+#overlay p {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.2rem;
+    opacity: 0.6;
+}
+
+/* Record Display Box (GameOver) */
+.record-box {
+    margin: 2rem 0;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.record-label {
+    font-size: 0.8rem;
+    opacity: 0.5;
+    letter-spacing: 0.1rem;
+}
+
+.record-value {
+    font-family: 'Fira Code', monospace;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--accent-cyan);
+    text-shadow: 0 0 10px var(--accent-cyan);
+}
+
+/* Glitch Effect */
+.glitch {
+    position: relative;
+}
+
+.glitch::before,
+.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-dark);
+}
+
+.glitch::before {
+    left: 2px;
+    text-shadow: -2px 0 var(--accent-red);
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim 5s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+    left: -2px;
+    text-shadow: -2px 0 var(--accent-cyan), 0 2px var(--accent-red);
+    clip: rect(85px, 450px, 140px, 0);
+    animation: glitch-anim2 5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+    0% { clip: rect(15px, 9999px, 66px, 0); }
+    10% { clip: rect(34px, 9999px, 55px, 0); }
+    20% { clip: rect(85px, 9999px, 5px, 0); }
+    30% { clip: rect(12px, 9999px, 85px, 0); }
+    40% { clip: rect(74px, 9999px, 90px, 0); }
+    50% { clip: rect(5px, 9999px, 35px, 0); }
+    60% { clip: rect(28px, 9999px, 62px, 0); }
+    70% { clip: rect(90px, 9999px, 20px, 0); }
+    80% { clip: rect(40px, 9999px, 44px, 0); }
+    90% { clip: rect(18px, 9999px, 97px, 0); }
+    100% { clip: rect(50px, 9999px, 15px, 0); }
+}
+
+@keyframes glitch-anim2 {
+    0% { clip: rect(85px, 9999px, 5px, 0); }
+    10% { clip: rect(12px, 9999px, 85px, 0); }
+    20% { clip: rect(74px, 9999px, 90px, 0); }
+    30% { clip: rect(5px, 9999px, 35px, 0); }
+    40% { clip: rect(28px, 9999px, 62px, 0); }
+    50% { clip: rect(90px, 9999px, 20px, 0); }
+    60% { clip: rect(40px, 9999px, 44px, 0); }
+    70% { clip: rect(18px, 9999px, 97px, 0); }
+    80% { clip: rect(50px, 9999px, 15px, 0); }
+    90% { clip: rect(15px, 9999px, 66px, 0); }
+    100% { clip: rect(34px, 9999px, 55px, 0); }
+}

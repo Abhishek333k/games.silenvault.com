@@ -1,0 +1,227 @@
+:root {
+    --bg-dark: #050507;
+    --neon-blue: #00d2ff;
+    --neon-pink: #ff007f;
+    --glass: rgba(255, 255, 255, 0.05);
+    --glass-heavy: rgba(10, 10, 12, 0.9);
+}
+
+* {
+    margin: 0; padding: 0; box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+}
+
+body, html {
+    width: 100%; height: 100%;
+    background-color: var(--bg-dark);
+    color: white;
+    overflow: hidden;
+    /* Mouse is VISIBLE by default now */
+    cursor: auto;
+}
+
+#game-container {
+    position: relative;
+    width: 100vw; height: 100vh;
+    background: #020205; /* Deep Space */
+    background-image: 
+        radial-gradient(circle at 20% 30%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(16, 185, 129, 0.15) 0%, transparent 50%);
+    overflow: hidden;
+}
+
+#game-container::before {
+    content: '';
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background-image: 
+        radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+        radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px);
+    background-size: 550px 550px, 350px 350px;
+    background-position: 0 0, 40px 60px;
+    opacity: 0.3;
+    animation: space-drift 100s linear infinite;
+}
+
+@keyframes space-drift {
+    from { background-position: 0 0, 40px 60px; }
+    to { background-position: 550px 550px, 390px 610px; }
+}
+
+#game-canvas {
+    display: block;
+    position: absolute; top: 0; left: 0;
+    z-index: 1;
+}
+
+#ui-layer {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 10;
+    pointer-events: none; /* UI doesn't block game clicks unless a screen is active */
+}
+
+/* Screens */
+.screen {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--glass-heavy);
+    backdrop-filter: blur(15px);
+    pointer-events: auto; /* Buttons are clickable */
+    transition: opacity 0.4s ease, visibility 0.4s;
+    z-index: 100;
+}
+
+.content { 
+    text-align: center; 
+    max-width: 600px;
+    padding: 2rem;
+}
+
+.logo {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 5rem;
+    font-weight: 700;
+    letter-spacing: 1.2rem;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 30px var(--neon-blue);
+}
+
+.highlight { color: var(--neon-pink); text-shadow: 0 0 30px var(--neon-pink); }
+.subtitle { letter-spacing: 0.6rem; opacity: 0.6; font-size: 0.9rem; margin-bottom: 2rem; text-transform: uppercase; }
+
+.mission-briefing {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 2.5rem;
+    text-align: left;
+    max-width: 500px;
+    margin-left: auto; margin-right: auto;
+    backdrop-filter: blur(10px);
+}
+.mission-briefing p {
+    font-size: 0.8rem;
+    line-height: 1.6;
+    margin-bottom: 0.8rem;
+    opacity: 0.9;
+    color: #fff;
+    font-weight: 300;
+}
+.mission-briefing p:last-child { margin-bottom: 0; }
+
+/* HUD */
+#hud {
+    position: absolute; top: 0; left: 0; width: 100%;
+    padding: 1.5rem 3rem;
+    display: flex; justify-content: space-between;
+    z-index: 50;
+    pointer-events: none;
+}
+
+.stat-group { display: flex; flex-direction: column; align-items: center; }
+.label { font-size: 0.7rem; letter-spacing: 0.2rem; opacity: 0.4; margin-bottom: 0.3rem; }
+.value { font-size: 1.8rem; font-weight: 900; color: #fff; }
+
+#fullscreen-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s;
+    height: 40px; width: 40px;
+    display: flex; align-items: center; justify-content: center;
+}
+
+#fullscreen-btn:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: var(--neon-blue);
+}
+
+/* Buttons */
+.neon-btn {
+    padding: 1.5rem 4rem;
+    background: transparent;
+    border: 2px solid var(--neon-blue);
+    color: var(--neon-blue);
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 0.4rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
+}
+
+.neon-btn:hover {
+    background: var(--neon-blue);
+    color: var(--bg-dark);
+    box-shadow: 0 0 50px var(--neon-blue);
+    transform: scale(1.05) translateY(-5px);
+}
+
+.menu-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.alt-modes {
+    display: flex;
+    gap: 1rem;
+}
+
+.secondary-btn {
+    padding: 0.8rem 2rem;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.2rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.3s;
+}
+
+.secondary-btn:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: var(--neon-blue);
+    color: var(--neon-blue);
+}
+
+.controls-hint { margin-top: 4rem; font-size: 0.8rem; opacity: 0.3; letter-spacing: 0.2rem; }
+
+.hidden { 
+    opacity: 0 !important; 
+    visibility: hidden !important; 
+    pointer-events: none !important; 
+}
+
+/* Pause Specific */
+#pause-screen {
+    background: rgba(5, 5, 7, 0.85);
+}
+
+#pause-screen .logo { font-size: 3rem; margin-bottom: 2rem; }
+
+#message-overlay {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 60;
+    pointer-events: none;
+}
+
+#message-text { 
+    font-family: 'Syncopate', sans-serif;
+    font-size: 4rem; 
+    letter-spacing: 1.5rem; 
+    text-shadow: 0 0 40px var(--neon-blue);
+}

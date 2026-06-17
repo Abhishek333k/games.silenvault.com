@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ignis: Zero | Thermal Survival</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Outfit:wght@300;600;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="game-canvas"></canvas>
+        
+        <div id="ui-layer">
+            <header id="hud" class="hidden">
+                <div class="stat-group">
+                    <span class="label">CORE HEAT</span>
+                    <div class="heat-bar-container">
+                        <div id="heat-fill"></div>
+                    </div>
+                </div>
+                <div class="stat-group">
+                    <span class="label">ABSORPTION</span>
+                    <span id="score" class="value">000000</span>
+                </div>
+            </header>
+
+            <section id="main-menu" class="screen">
+                <div class="content">
+                    <h1 class="logo">IGNIS<br><span class="highlight">ZERO</span></h1>
+                    <p class="subtitle">THERMAL SURVIVAL ENGINE</p>
+                    <div class="mission-briefing">
+                        <p>MISSION: Prevent core freeze-out in the obsidian void.</p>
+                        <p>CONTROLS: Mouse to steer thermal core • Space to Pause.</p>
+                        <p>LOGIC: Heat drains constantly. Absorb Frost Shards to refuel. Avoid Obsidian Sentinels to prevent thermal leaks.</p>
+                    </div>
+                    <button id="start-btn" class="neon-btn">IGNITE CORE</button>
+                    <div class="controls-hint">
+                        MOUSE TO MOVE • ABSORB FROST • DON'T FREEZE
+                    </div>
+                </div>
+            </section>
+
+            <section id="pause-screen" class="screen hidden">
+                <div class="content">
+                    <h1 class="logo">STASIS</h1>
+                    <button id="resume-btn" class="neon-btn">RESUME IGNITION</button>
+                </div>
+            </section>
+
+            <div id="overlay" class="hidden">
+                <h2 id="overlay-text">CORE FROZEN</h2>
+            </div>
+        </div>
+    </div>
+    <script src="game.js" type="module"></script>
+</body>
+</html>
