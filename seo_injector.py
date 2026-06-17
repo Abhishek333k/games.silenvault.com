@@ -40,6 +40,24 @@ GAMES = {
         "keywords": "hacking simulator, command line game, terminal puzzle, cli browser game, hacker web game",
         "image": f"{DOMAIN}/assets/og-orbitterminal.png"
     },
+    "Snake": {
+        "title": "Retro Snake | Play Online Free",
+        "description": "Play the classic Snake arcade game in your browser. Eat the food and grow your snake without hitting the walls.",
+        "keywords": "snake game, retro snake, nokia snake browser, play snake online, classic arcade game",
+        "image": f"{DOMAIN}/assets/og-snake.png"
+    },
+    "SpaceInvaders": {
+        "title": "Space Invaders - Classic Arcade Shooter | Play Free",
+        "description": "Defend the earth from descending aliens in this classic Space Invaders clone. Shoot the saucers and take cover.",
+        "keywords": "space invaders, classic alien shooter, retro arcade browser game, free online space invaders",
+        "image": f"{DOMAIN}/assets/og-spaceinvaders.png"
+    },
+    "Pacman": {
+        "title": "Pac-Man - Classic Arcade Maze | Play Online Free",
+        "description": "Play the legendary Pac-Man maze game. Eat all the dots and avoid the ghosts. Grab a power pellet to turn the tables.",
+        "keywords": "pacman, pac-man browser game, classic arcade maze, retro pacman online, free pacman",
+        "image": f"{DOMAIN}/assets/og-pacman.png"
+    },
     "Game-2048": {
         "title": "2048 - Classic Number Puzzle Game | Play Free",
         "description": "Play the incredibly addictive 2048 number puzzle game. Slide tiles to combine numbers and reach the 2048 tile.",
