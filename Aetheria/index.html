@@ -46,9 +46,12 @@
     <meta property="twitter:image" content="https://games.silenvault.com/assets/og-aetheria.png">
 </head>
 <body>
-    <div id="game-container">
-        <div class="sky-gradient"></div>
-        <canvas id="game-canvas"></canvas>
+    <div id="arcade-cabinet">
+        <div id="arcade-bezel">
+            <div id="game-container">
+                <div class="sky-gradient"></div>
+                <canvas id="game-canvas"></canvas>
+                <div class="crt-overlay"></div>
 
         <div id="ui-layer">
             <!-- HUD -->
@@ -133,6 +136,8 @@
 
             <div id="fade-screen" class="hidden"></div>
         </div>
+    </div>
+    </div>
     </div>
 
     <script src="game.js" type="module"></script>

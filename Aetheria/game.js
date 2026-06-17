@@ -192,8 +192,17 @@ function lineIntersectsRect(x1, y1, x2, y2, l, t, r, b) {
 }
 
 function resize(gen = false) {
-    width = window.innerWidth; height = window.innerHeight;
-    canvas.width = width; canvas.height = height;
+    const dpr = window.devicePixelRatio || 1;
+    const container = document.getElementById('game-container');
+    width = container.clientWidth; 
+    height = container.clientHeight;
+    
+    canvas.width = width * dpr; 
+    canvas.height = height * dpr;
+    canvas.style.width = width + "px";
+    canvas.style.height = height + "px";
+    
+    ctx.scale(dpr, dpr);
     if (gen) generateLevel();
 }
 
@@ -303,7 +312,24 @@ function handleInput() {
     }
 }
 
-function update() { handleInput(); draw(); requestAnimationFrame(update); }
+let lastTime = 0;
+let accumulator = 0;
+const STEP = 1/60;
+
+function update(time = 0) {
+    let dt = (time - lastTime) / 1000;
+    if (dt > 0.25) dt = 0.25; // Prevent physics spiral of death on tab minimize
+    lastTime = time;
+    accumulator += dt;
+    
+    // Decouple physics/draw step from monitor refresh rate to fix 144Hz bugs
+    while(accumulator >= STEP) {
+        if (currentState === STATES.PLAYING) handleInput();
+        draw(); 
+        accumulator -= STEP;
+    }
+    requestAnimationFrame(update); 
+}
 
 function draw() {
     ctx.clearRect(0,0,width,height);
