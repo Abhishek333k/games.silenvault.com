@@ -115,4 +115,19 @@
     <lastmod>2026-06-17</lastmod>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://games.silenvault.com/Hextris/</loc>
+    <lastmod>2026-06-17</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://games.silenvault.com/TicTacToe/</loc>
+    <lastmod>2026-06-17</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://games.silenvault.com/Breakout/</loc>
+    <lastmod>2026-06-17</lastmod>
+    <priority>0.8</priority>
+  </url>
 </urlset>

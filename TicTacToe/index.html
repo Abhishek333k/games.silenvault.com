@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tic-Tac-Toe - Classic Strategy Game | Play Free</title>
+    <link rel="stylesheet" type="text/css" href="css/tic-tac-toe.css" />
+    <link rel="stylesheet" href="../assets/toast.css">
+    <script src="../assets/toast.js"></script>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Play the classic game of Tic-Tac-Toe directly in your browser. A timeless strategy game for two.">
+    <meta name="keywords" content="tic tac toe, naughts and crosses, classic strategy game, free online tic tac toe">
+    <meta name="author" content="SilenVault">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://games.silenvault.com/TicTacToe/">
+    <meta property="og:title" content="Tic-Tac-Toe - Classic Strategy Game | Play Free">
+    <meta property="og:description" content="Play the classic game of Tic-Tac-Toe directly in your browser. A timeless strategy game for two.">
+    <meta property="og:image" content="https://games.silenvault.com/assets/og-tictactoe.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://games.silenvault.com/TicTacToe/">
+    <meta property="twitter:title" content="Tic-Tac-Toe - Classic Strategy Game | Play Free">
+    <meta property="twitter:description" content="Play the classic game of Tic-Tac-Toe directly in your browser. A timeless strategy game for two.">
+    <meta property="twitter:image" content="https://games.silenvault.com/assets/og-tictactoe.png">
+</head>
+<body>
+    <main class="container">
+        <div class="theme-toggle">
+            <input type="checkbox" id="theme-switch" />
+            <label for="theme-switch">Toggle Dark/Light Mode</label>
+        </div>
+        <div id="tictactoe" role="grid" aria-label="Tic Tac Toe Board"></div>
+        <div id="player" align="center">
+            <span id="turn" role="status" aria-live="polite">Player X</span>
+        </div>
+    </main>
+    <script type="text/javascript" src="js/tic-tac-toe.js" defer></script>
+</body>
+</html>

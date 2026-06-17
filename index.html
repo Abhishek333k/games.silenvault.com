@@ -254,6 +254,7 @@
     
     
     
+    
     <!-- SEO Meta Tags -->
     <meta name="description" content="Play a suite of premium, ad-free web games directly in your browser. Features relaxing puzzles, rhythm hacking, and cyberpunk arcades.">
     <meta name="keywords" content="free browser games, premium web games, no ads games, online puzzle games, retro arcade browser">
@@ -545,6 +546,39 @@
                 path: 'Bounce/index.html',
                 desc: 'Navigate the endless retro platformer as a bouncing red ball, dodging spikes and making leaps of faith.',
                 stats: [{ label: 'MAX LEVEL', key: 'bounce_level' }]
+            },
+            {
+                id: 'hextris',
+                title: 'Hextris',
+                tagline: 'HEXAGONAL PUZZLE',
+                color: '#e74c3c',
+                colorAlpha: 'rgba(231, 76, 60, 0.3)',
+                icon: '⬡',
+                path: 'Hextris/index.html',
+                desc: 'Rotate the hexagon to catch falling blocks and match 3 colors to clear lines. An addictive, fast-paced puzzle game.',
+                stats: [{ label: 'HIGH SCORE', key: 'hextris_highscore' }]
+            },
+            {
+                id: 'tictactoe',
+                title: 'Tic-Tac-Toe',
+                tagline: 'CLASSIC STRATEGY',
+                color: '#3498db',
+                colorAlpha: 'rgba(52, 152, 219, 0.3)',
+                icon: '✕',
+                path: 'TicTacToe/index.html',
+                desc: 'Play the classic game of Tic-Tac-Toe directly in your browser. A timeless strategy game for two.',
+                stats: []
+            },
+            {
+                id: 'breakout',
+                title: 'Breakout',
+                tagline: 'BRICK BREAKER',
+                color: '#f1c40f',
+                colorAlpha: 'rgba(241, 196, 15, 0.3)',
+                icon: '▤',
+                path: 'Breakout/index.html',
+                desc: 'Smash through the wall of bricks in this classic arcade Breakout clone. Keep the ball in play to win!',
+                stats: [{ label: 'SCORE', key: 'breakout_score' }]
             }
         ];
 
@@ -556,7 +590,7 @@
             'asteroids': 'retro', 'floppybird': 'arcade', 'snake': 'retro',
             'spaceinvaders': 'retro', 'pacman': 'retro', 'pong': 'retro',
             'minesweeper': 'logic', 'match3': 'logic', 'solitaire': 'logic',
-            'bounce': 'arcade'
+            'bounce': 'arcade', 'hextris': 'logic', 'tictactoe': 'logic', 'breakout': 'retro'
         };
 
         GAMES.forEach(g => g.category = CATEGORY_MAP[g.id] || 'retro');

@@ -136,6 +136,24 @@ GAMES = {
         "keywords": "arcade survival game, grid evasion game, cyberpunk action web game, retro neon arcade",
         "image": f"{DOMAIN}/assets/og-vipergrid.png"
     },
+    "Hextris": {
+        "title": "Hextris - Hexagonal Falling Block Puzzle | Play Free",
+        "description": "Rotate the hexagon to catch falling blocks and match 3 colors to clear lines. An addictive, fast-paced puzzle game.",
+        "keywords": "hextris, hex puzzle, match 3 game, falling block puzzle, free online browser game",
+        "image": f"{DOMAIN}/assets/og-hextris.png"
+    },
+    "TicTacToe": {
+        "title": "Tic-Tac-Toe - Classic Strategy Game | Play Free",
+        "description": "Play the classic game of Tic-Tac-Toe directly in your browser. A timeless strategy game for two.",
+        "keywords": "tic tac toe, naughts and crosses, classic strategy game, free online tic tac toe",
+        "image": f"{DOMAIN}/assets/og-tictactoe.png"
+    },
+    "Breakout": {
+        "title": "Breakout - Classic Arcade Brick Breaker | Play Free",
+        "description": "Smash through the wall of bricks in this classic arcade Breakout clone. Keep the ball in play to win!",
+        "keywords": "breakout game, brick breaker, retro arcade browser game, free online breakout",
+        "image": f"{DOMAIN}/assets/og-breakout.png"
+    },
     "ROOT": {
         "title": "Premium Free Web Games | Puzzle, Arcade & Strategy",
         "description": "Play a suite of premium, ad-free web games directly in your browser. Features relaxing puzzles, rhythm hacking, and cyberpunk arcades.",
