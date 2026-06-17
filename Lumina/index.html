@@ -33,9 +33,20 @@
     <meta property="twitter:title" content="Light Refraction & Color Mixing Puzzle | Free Web Game">
     <meta property="twitter:description" content="Bend light, mix colors, and solve intricate optical puzzles in this beautiful brain-teaser.">
     <meta property="twitter:image" content="https://games.silenvault.com/assets/og-lumina.png">
+
+    <!-- UI Upgrade -->
+    <link rel="stylesheet" href="../assets/arcade-cabinet.css">
 </head>
 <body>
-    <div id="game-container">
+    <div id="arcade-cabinet">
+        <div id="arcade-bezel">
+            <div id="game-container">
+
+    
+    <div id="arcade-cabinet">
+        <div id="arcade-bezel">
+            <div id="inner-game-container">
+
         <canvas id="game-canvas"></canvas>
         
         <div id="ui-layer">
@@ -93,7 +104,12 @@
             </section>
         </div>
     </div>
-    <script src="game.js"></script>
+    
+                <div class="crt-overlay"></div>
+            </div>
+        </div>
+    </div>
+<script src="game.js"></script>
     <link rel="stylesheet" href="../assets/toast.css">
     <script src="../assets/toast.js"></script>
 </body>

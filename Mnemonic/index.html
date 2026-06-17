@@ -44,9 +44,20 @@
     <meta property="twitter:title" content="Cyberpunk Circuit Routing Puzzle Game | Free Browser Game">
     <meta property="twitter:description" content="Route signals through complex logic gates and hack the mainframe in this cyberpunk-themed circuit puzzle game.">
     <meta property="twitter:image" content="https://games.silenvault.com/assets/og-mnemonic.png">
+
+    <!-- UI Upgrade -->
+    <link rel="stylesheet" href="../assets/arcade-cabinet.css">
 </head>
 <body>
-    <div id="game-container">
+    <div id="arcade-cabinet">
+        <div id="arcade-bezel">
+            <div id="game-container">
+
+    
+    <div id="arcade-cabinet">
+        <div id="arcade-bezel">
+            <div id="inner-game-container">
+
         <canvas id="game-canvas"></canvas>
 
         <div id="ui-layer">
@@ -117,7 +128,12 @@
         </div>
     </div>
 
-    <script src="game.js"></script>
+    
+                <div class="crt-overlay"></div>
+            </div>
+        </div>
+    </div>
+<script src="game.js"></script>
     <link rel="stylesheet" href="../assets/toast.css">
     <script src="../assets/toast.js"></script>
 </body>

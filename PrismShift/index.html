@@ -33,9 +33,20 @@
     <meta property="twitter:title" content="Spatial Light Manipulation Puzzle | Free Online Game">
     <meta property="twitter:description" content="Shift perspectives and manipulate light in this mind-bending 3D spatial puzzle game.">
     <meta property="twitter:image" content="https://games.silenvault.com/assets/og-prismshift.png">
+
+    <!-- UI Upgrade -->
+    <link rel="stylesheet" href="../assets/arcade-cabinet.css">
 </head>
 <body>
-    <div id="game-container">
+    <div id="arcade-cabinet">
+        <div id="arcade-bezel">
+            <div id="game-container">
+
+    
+    <div id="arcade-cabinet">
+        <div id="arcade-bezel">
+            <div id="inner-game-container">
+
         <canvas id="game-canvas"></canvas>
         
         <div id="ui-layer">
@@ -71,7 +82,12 @@
             </div>
         </div>
     </div>
-    <script src="game.js" type="module"></script>
+    
+                <div class="crt-overlay"></div>
+            </div>
+        </div>
+    </div>
+<script src="game.js" type="module"></script>
     <link rel="stylesheet" href="../assets/toast.css">
     <script src="../assets/toast.js"></script>
 </body>

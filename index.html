@@ -273,31 +273,46 @@
     <meta property="twitter:title" content="Premium Free Web Games | Puzzle, Arcade & Strategy">
     <meta property="twitter:description" content="Play a suite of premium, ad-free web games directly in your browser. Features relaxing puzzles, rhythm hacking, and cyberpunk arcades.">
     <meta property="twitter:image" content="https://games.silenvault.com/assets/og-main.png">
+    <!-- UI Upgrade -->
+    <link rel="stylesheet" href="assets/arcade-cabinet.css">
+    <style>
+        #game-container { overflow-y: auto !important; overflow-x: hidden; padding-bottom: 2rem; scrollbar-width: none; }
+        #game-container::-webkit-scrollbar { display: none; }
+        /* Override body gradient since cabinet takes over */
+        body { background: #111 !important; display: flex !important; justify-content: center !important; align-items: center !important; }
+    </style>
 </head>
 <body>
-    <div class="nebula-bg" id="nebula"></div>
-    
-    <header>
-        <h1 class="logo">PEGASUS</h1>
-        <p class="system-status" style="margin-bottom: 0.5rem; font-weight: bold;">GAME VAULT</p>
-        <p style="color: var(--accent); font-size: 0.7rem; letter-spacing: 0.2rem; margin-bottom: 2rem; opacity: 0.8;">POWERED BY SILENVAULT</p>
-        
-        <div class="controls-container">
-            <input type="text" id="search-input" class="search-box" placeholder="SEARCH VAULT..." autocomplete="off">
-            <div class="category-filters" id="category-filters">
-                <button class="filter-pill active" data-category="all">ALL</button>
-                <button class="filter-pill" data-category="logic">LOGIC / PUZZLE</button>
-                <button class="filter-pill" data-category="arcade">ARCADE / ACTION</button>
-                <button class="filter-pill" data-category="retro">RETRO CLASSICS</button>
+    <div id="arcade-cabinet">
+        <div id="arcade-bezel">
+            <div id="game-container">
+                <div class="crt-overlay" style="position: fixed;"></div>
+                <div class="nebula-bg" id="nebula" style="position: absolute; height: 200%;"></div>
+                
+                <header>
+                    <h1 class="logo">PEGASUS</h1>
+                    <p class="system-status" style="margin-bottom: 0.5rem; font-weight: bold;">ARCADE SYSTEM</p>
+                    <p style="color: var(--accent); font-size: 0.7rem; letter-spacing: 0.2rem; margin-bottom: 2rem; opacity: 0.8;">POWERED BY SILENVAULT</p>
+                    
+                    <div class="controls-container">
+                        <input type="text" id="search-input" class="search-box" placeholder="SEARCH VAULT..." autocomplete="off">
+                        <div class="category-filters" id="category-filters">
+                            <button class="filter-pill active" data-category="all">ALL</button>
+                            <button class="filter-pill" data-category="logic">LOGIC / PUZZLE</button>
+                            <button class="filter-pill" data-category="arcade">ARCADE / ACTION</button>
+                            <button class="filter-pill" data-category="retro">RETRO CLASSICS</button>
+                        </div>
+                    </div>
+                </header>
+
+                <div id="game-vault">
+                    <!-- Game Tiles Injected Here -->
+                </div>
+
+                <footer style="text-align: center;">PEGASUS ARCHITECTURE • v3.0</footer>
             </div>
         </div>
-    </header>
-
-    <div id="game-vault">
-        <!-- Game Tiles Injected Here -->
     </div>
-
-    <footer>PEGASUS ARCHITECTURE • v2.1</footer>
 
     <script>
         const GAMES = [

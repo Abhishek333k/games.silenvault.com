@@ -44,9 +44,16 @@
     <meta property="twitter:title" content="Tetris - Classic Block Puzzle Game | Play Online Free">
     <meta property="twitter:description" content="Play the legendary Tetris block falling puzzle game. Clear lines and survive as long as possible.">
     <meta property="twitter:image" content="https://games.silenvault.com/assets/og-tetris.png">
+
+    <!-- UI Upgrade -->
+    <link rel="stylesheet" href="../assets/arcade-cabinet.css">
 </head>
 
 <body>
+    <div id="arcade-cabinet">
+        <div id="arcade-bezel">
+            <div id="game-container">
+
 
   <div id="tetris">
     <div id="menu">
@@ -60,7 +67,12 @@
     </canvas>
   </div>
 
-  <script src="stats.js"></script>
+  
+                <div class="crt-overlay"></div>
+            </div>
+        </div>
+    </div>
+<script src="stats.js"></script>
   <script>
 
     //-------------------------------------------------------------------------

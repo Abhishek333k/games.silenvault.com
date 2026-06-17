@@ -37,8 +37,15 @@
     <meta property="twitter:title" content="2048 - Classic Number Puzzle Game | Play Free">
     <meta property="twitter:description" content="Play the incredibly addictive 2048 number puzzle game. Slide tiles to combine numbers and reach the 2048 tile.">
     <meta property="twitter:image" content="https://games.silenvault.com/assets/og-2048.png">
+
+    <!-- UI Upgrade -->
+    <link rel="stylesheet" href="../assets/arcade-cabinet.css">
 </head>
 <body>
+    <div id="arcade-cabinet">
+        <div id="arcade-bezel">
+            <div id="game-container">
+
   <div class="container">
     <div class="heading">
       <h1 class="title">2048</h1>
@@ -107,7 +114,12 @@
     </p>
   </div>
 
-  <script src="js/bind_polyfill.js"></script>
+  
+                <div class="crt-overlay"></div>
+            </div>
+        </div>
+    </div>
+<script src="js/bind_polyfill.js"></script>
   <script src="js/classlist_polyfill.js"></script>
   <script src="js/animframe_polyfill.js"></script>
   <script src="js/keyboard_input_manager.js"></script>

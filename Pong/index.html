@@ -30,8 +30,15 @@
     <meta property="twitter:title" content="Retro Pong - Classic Arcade Tennis | Play Free">
     <meta property="twitter:description" content="Play the original arcade classic Pong. Challenge the AI in this fast-paced digital tennis game.">
     <meta property="twitter:image" content="https://games.silenvault.com/assets/og-pong.png">
+
+    <!-- UI Upgrade -->
+    <link rel="stylesheet" href="../assets/arcade-cabinet.css">
 </head>
 <body>
+    <div id="arcade-cabinet">
+        <div id="arcade-bezel">
+            <div id="game-container">
+
     <canvas id="game"></canvas>
     <script>
         const canvas = document.getElementById('game');
@@ -147,7 +154,12 @@
         loop();
     </script>
 
-    <!-- NATIVE MOBILE TOUCH ZONE CONTROLLER (Phase 2) -->
+    
+                <div class="crt-overlay"></div>
+            </div>
+        </div>
+    </div>
+<!-- NATIVE MOBILE TOUCH ZONE CONTROLLER (Phase 2) -->
     <script src="../assets/touch_zones.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', () => {

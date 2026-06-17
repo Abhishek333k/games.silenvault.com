@@ -27,7 +27,12 @@
         padding: 5px;
       }
     </style>
-    <script>
+    
+                <div class="crt-overlay"></div>
+            </div>
+        </div>
+    </div>
+<script>
       function getTheme() {
         function changeTheme(themeUrl) {
           const elm = document.getElementById("style");
@@ -109,8 +114,15 @@
     <meta property="twitter:title" content="Retro Snake | Play Online Free">
     <meta property="twitter:description" content="Play the classic Snake arcade game in your browser. Eat the food and grow your snake without hitting the walls.">
     <meta property="twitter:image" content="https://games.silenvault.com/assets/og-snake.png">
+
+    <!-- UI Upgrade -->
+    <link rel="stylesheet" href="../assets/arcade-cabinet.css">
 </head>
   <body>
+    <div id="arcade-cabinet">
+        <div id="arcade-bezel">
+            <div id="game-container">
+
     <div class="snake-toolbar">
       <div style="display: inline-block; margin-right: 10px">
         <span>Theme:</span>
