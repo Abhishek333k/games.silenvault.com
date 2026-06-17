@@ -54,8 +54,14 @@ function setupEvents() {
 }
 
 function resize() {
-    width = window.innerWidth; height = window.innerHeight;
-    canvas.width = width; canvas.height = height;
+    const dpr = window.devicePixelRatio || 1;
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    canvas.style.width = width + 'px';
+    canvas.style.height = height + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     player.x = width / 2; player.y = height / 2;
 }
 
@@ -192,8 +198,18 @@ function gameOver() {
     setTimeout(() => location.reload(), 3000);
 }
 
-function loop() {
-    update();
+let lastTime = 0;
+let accumulator = 0;
+const STEP = 1/60;
+function loop(time = 0) {
+    let dt = (time - lastTime) / 1000;
+    if (dt > 0.25) dt = 0.25;
+    lastTime = time;
+    accumulator += dt;
+    while(accumulator >= STEP) {
+        update();
+        accumulator -= STEP;
+    }
     draw();
     requestAnimationFrame(loop);
 }

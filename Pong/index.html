@@ -42,8 +42,14 @@
         let isGameOver = false;
 
         function resize() {
-            width = canvas.width = Math.min(window.innerWidth * 0.9, 800);
-            height = canvas.height = Math.min(window.innerHeight * 0.8, 600);
+            width = Math.min(window.innerWidth * 0.9, 800);
+            height = Math.min(window.innerHeight * 0.8, 600);
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+            canvas.style.width = width + 'px';
+            canvas.style.height = height + 'px';
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
             paddleHeight = height * 0.15;
             paddleWidth = width * 0.02;
             ballSize = width * 0.015;
@@ -141,7 +147,21 @@
             ctx.fillRect(ball.x, ball.y, ballSize, ballSize);
         }
 
-        function loop() { update(); draw(); requestAnimationFrame(loop); }
+        let lastTime = 0;
+let accumulator = 0;
+const STEP = 1/60;
+function loop(time = 0) {
+    let dt = (time - lastTime) / 1000;
+    if (dt > 0.25) dt = 0.25;
+    lastTime = time;
+    accumulator += dt;
+    while(accumulator >= STEP) {
+        update();
+        accumulator -= STEP;
+    }
+    draw();
+    requestAnimationFrame(loop);
+}
         
         resize();
         loop();

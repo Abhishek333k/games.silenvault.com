@@ -231,10 +231,29 @@ function shakeCamera() {
     shake = 12;
 }
 
+function resize() {
+    const dpr = window.devicePixelRatio || 1;
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    canvas.style.width = width + 'px';
+    canvas.style.height = height + 'px';
+    ctx.scale(dpr, dpr);
+}
+
+let accumulator = 0;
+const STEP = 1/60;
+
 function loop(time) {
-    const dt = time - lastTime;
+    let dt = (time - lastTime) / 1000;
+    if (dt > 0.25) dt = 0.25;
     lastTime = time;
-    update(dt);
+    accumulator += dt;
+    while(accumulator >= STEP) {
+        update(STEP * 1000);
+        accumulator -= STEP;
+    }
     draw();
     requestAnimationFrame(loop);
 }

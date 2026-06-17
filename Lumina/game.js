@@ -70,10 +70,14 @@ function playSound(freq, duration, type = 'sine', vol = 0.1) {
 
 // Resize logic
 function resize() {
+    const dpr = window.devicePixelRatio || 1;
     width = window.innerWidth;
     height = window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    canvas.style.width = width + 'px';
+    canvas.style.height = height + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     if (currentState === STATES.MENU) {
         player.x = width / 2;
         player.y = height / 2;
@@ -425,8 +429,18 @@ function draw() {
 }
 
 // Main game iteration loop
-function loop() {
-    update();
+let lastTime = 0;
+let accumulator = 0;
+const STEP = 1/60;
+function loop(time = 0) {
+    let dt = (time - lastTime) / 1000;
+    if (dt > 0.25) dt = 0.25;
+    lastTime = time;
+    accumulator += dt;
+    while(accumulator >= STEP) {
+        update();
+        accumulator -= STEP;
+    }
     draw();
     requestAnimationFrame(loop);
 }
