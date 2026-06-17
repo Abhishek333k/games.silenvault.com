@@ -34,23 +34,15 @@
     <meta property="twitter:title" content="Retro Bounce - Endless Platformer | Play Free">
     <meta property="twitter:description" content="Navigate the bouncing red ball through treacherous spikes and platforms in this retro endless runner.">
     <meta property="twitter:image" content="https://games.silenvault.com/assets/og-bounce.png">
-    <!-- UI Upgrade -->
-    <link rel="stylesheet" href="../assets/arcade-cabinet.css">
     <style>
         #ui { position: absolute; top: 20px; left: 20px; color: #fff; font-size: 24px; font-weight: bold; text-shadow: 2px 2px 0 #000; z-index: 100; font-family: monospace; }
     </style>
 </head>
 <body>
-    <div id="arcade-cabinet">
-        <div id="arcade-bezel">
-            <div id="game-container">
+    <div id="game-container">
                 <div id="ui">LEVEL: <span id="level">1</span></div>
                 <canvas id="game"></canvas>
-                <div class="crt-overlay"></div>
-            </div>
-        </div>
-    </div>
-
+                </div>
     <script>
         const canvas = document.getElementById('game');
         const ctx = canvas.getContext('2d');
