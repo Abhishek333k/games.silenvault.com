@@ -177,17 +177,24 @@ function setupEvents() {
 }
 
 function resize() {
-    width = window.innerWidth;
-    height = window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
-    recalculateGridSpacing();
-}
-
-function recalculateGridSpacing() {
-    cellSize = Math.min(80, Math.floor(Math.min(width * 0.8 / gridCols, height * 0.6 / gridRows)));
-    gridOffsetX = Math.floor((width - gridCols * cellSize) / 2);
-    gridOffsetY = Math.floor((height - gridRows * cellSize) / 2 + 30);
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+    
+    // Dynamically scale cell size for mobile screens
+    // We want the grid width to be 95% of screen width, or max 60px per cell
+    const maxGridWidth = width * 0.95;
+    const maxGridHeight = height * 0.75; // Leave room for HUD
+    
+    const cellW = maxGridWidth / gridCols;
+    const cellH = maxGridHeight / gridRows;
+    
+    cellSize = Math.min(60, Math.min(cellW, cellH));
+    
+    const gridWidth = gridCols * cellSize;
+    const gridHeight = gridRows * cellSize;
+    
+    gridOffsetX = (width - gridWidth) / 2;
+    gridOffsetY = (height - gridHeight) / 2 + (height * 0.05);
 }
 
 function startGame() {
@@ -817,16 +824,17 @@ function update() {
 }
 
 function draw() {
-    ctx.fillStyle = COLORS.bg;
-    ctx.fillRect(0, 0, width, height);
+    ctx.clearRect(0, 0, width, height);
 
-    // Dynamic grid overlay (cybernetic network aesthetic)
-    ctx.fillStyle = 'rgba(0, 242, 255, 0.02)';
-    for (let x = 0; x < width; x += 40) {
-        for (let y = 0; y < height; y += 40) {
+    // Dynamic grid overlay (crosshairs instead of dots)
+    ctx.strokeStyle = 'rgba(0, 242, 255, 0.15)';
+    ctx.lineWidth = 1;
+    for (let x = gridOffsetX % cellSize; x < width; x += cellSize) {
+        for (let y = gridOffsetY % cellSize; y < height; y += cellSize) {
             ctx.beginPath();
-            ctx.arc(x, y, 1, 0, Math.PI * 2);
-            ctx.fill();
+            ctx.moveTo(x - 4, y); ctx.lineTo(x + 4, y);
+            ctx.moveTo(x, y - 4); ctx.lineTo(x, y + 4);
+            ctx.stroke();
         }
     }
 
@@ -870,10 +878,23 @@ function drawCell(cell) {
         ctx.rotate(cell.visualAngleOffset);
     }
 
-    // Background tile bounds
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.02)';
-    ctx.lineWidth = 1;
-    ctx.strokeRect(-half, -half, cellSize, cellSize);
+    // Holographic glass tile bounds (Corner Brackets)
+    ctx.fillStyle = 'rgba(0, 242, 255, 0.03)';
+    ctx.fillRect(-half + 2, -half + 2, cellSize - 4, cellSize - 4);
+    
+    ctx.strokeStyle = 'rgba(0, 242, 255, 0.3)';
+    ctx.lineWidth = 1.5;
+    const cl = 6; // Corner line length
+    ctx.beginPath();
+    // Top-Left
+    ctx.moveTo(-half + 2, -half + 2 + cl); ctx.lineTo(-half + 2, -half + 2); ctx.lineTo(-half + 2 + cl, -half + 2);
+    // Top-Right
+    ctx.moveTo(half - 2 - cl, -half + 2); ctx.lineTo(half - 2, -half + 2); ctx.lineTo(half - 2, -half + 2 + cl);
+    // Bottom-Right
+    ctx.moveTo(half - 2, half - 2 - cl); ctx.lineTo(half - 2, half - 2); ctx.lineTo(half - 2 - cl, half - 2);
+    // Bottom-Left
+    ctx.moveTo(-half + 2 + cl, half - 2); ctx.lineTo(-half + 2, half - 2); ctx.lineTo(-half + 2, half - 2 - cl);
+    ctx.stroke();
 
     // Connection paths
     ctx.lineWidth = cell.active ? 4 : 2;
@@ -886,7 +907,7 @@ function drawCell(cell) {
         ctx.shadowBlur = 0;
     }
 
-    // Draw solid base wire
+    // Draw base wire circuitry
     for (let d = 0; d < 4; d++) {
         if (cell.connections[d]) {
             const offset = DIRS[d];
@@ -894,6 +915,16 @@ function drawCell(cell) {
             ctx.moveTo(0, 0);
             ctx.lineTo(offset.x * half, offset.y * half);
             ctx.stroke();
+            
+            // Draw inner wire core for un-powered active lines to make them look like cables
+            if (cell.active && cell.signalValue === 0) {
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = '#000000';
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.lineTo(offset.x * half, offset.y * half);
+                ctx.stroke();
+            }
         }
     }
     

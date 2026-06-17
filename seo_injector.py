@@ -5,66 +5,73 @@ DOMAIN = "https://games.silenvault.com"
 
 GAMES = {
     "Aetheria": {
-        "title": "Aetheria - Serene Puzzle Game | SilenVault Games",
-        "description": "Immerse yourself in Aetheria, an atmosphere-driven puzzle experience that challenges your mind while soothing your senses.",
-        "keywords": "aetheria, puzzle game, relaxing game, atmospheric puzzle, web game, silenvault",
+        "title": "Relaxing Atmospheric Puzzle Game | Free Browser Games",
+        "description": "Play this relaxing, atmosphere-driven puzzle experience right in your browser. Solve serene challenges that soothe your senses.",
+        "keywords": "relaxing puzzle game, atmospheric browser game, free online puzzles, zen puzzle, calm web game",
         "image": f"{DOMAIN}/assets/og-aetheria.png"
     },
     "Bit-Beat": {
-        "title": "Bit-Beat - Retro Rhythm Hacking | SilenVault Games",
-        "description": "Hack to the rhythm in Bit-Beat. Fast-paced retro arcade action combined with rhythmic precision.",
-        "keywords": "bit-beat, rhythm game, hacking game, retro arcade, web game, silenvault",
+        "title": "Retro Rhythm Hacking Game | Play Online Free",
+        "description": "Hack to the rhythm in this fast-paced retro arcade browser game. Test your rhythmic precision and typing speed.",
+        "keywords": "rhythm hacking game, retro arcade browser game, typing rhythm game, free online arcade, cyberpunk rhythm",
         "image": f"{DOMAIN}/assets/og-bitbeat.png"
     },
     "IgnisZero": {
-        "title": "IgnisZero - High Stakes Firewall Defense | SilenVault Games",
-        "description": "Defend the core in IgnisZero. Intense firewall defense gameplay requiring quick reflexes and strategy.",
-        "keywords": "igniszero, defense game, firewall game, action web game, silenvault",
+        "title": "High Stakes Firewall Defense Game | Action Web Games",
+        "description": "Defend the core in this intense firewall defense simulator. Quick reflexes and strategy required.",
+        "keywords": "firewall defense game, cyber security simulator, fast paced action game, browser defense game",
         "image": f"{DOMAIN}/assets/og-igniszero.png"
     },
     "Lumina": {
-        "title": "Lumina - Light Refraction Puzzles | SilenVault Games",
-        "description": "Bend light, mix colors, and solve intricate puzzles in Lumina. A beautiful brain-teaser.",
-        "keywords": "lumina, light puzzle, color mixing game, logic game, web game, silenvault",
+        "title": "Light Refraction & Color Mixing Puzzle | Free Web Game",
+        "description": "Bend light, mix colors, and solve intricate optical puzzles in this beautiful brain-teaser.",
+        "keywords": "light puzzle game, color mixing game, optics browser game, physics puzzle online, brain teaser",
         "image": f"{DOMAIN}/assets/og-lumina.png"
     },
     "Mnemonic": {
-        "title": "Mnemonic - Cyberpunk Logic Gate Puzzles | SilenVault Games",
-        "description": "Route signals through complex logic gates in Mnemonic. A cyberpunk-themed circuit puzzle game.",
-        "keywords": "mnemonic, logic gates, cyberpunk puzzle, circuit routing game, programming puzzle, silenvault",
+        "title": "Cyberpunk Circuit Routing Puzzle Game | Free Browser Game",
+        "description": "Route signals through complex logic gates and hack the mainframe in this cyberpunk-themed circuit puzzle game.",
+        "keywords": "logic gate puzzle, cyberpunk hacking game, circuit routing puzzle, programming browser game",
         "image": f"{DOMAIN}/assets/og-mnemonic.png"
     },
     "OrbitTerminal": {
-        "title": "OrbitTerminal - CLI Hacking Simulator | SilenVault Games",
-        "description": "Master the command line in OrbitTerminal. An immersive terminal simulation and hacking puzzle.",
-        "keywords": "orbitterminal, hacking simulator, cli game, terminal puzzle, web game, silenvault",
+        "title": "CLI Terminal Hacking Simulator | Play Online Free",
+        "description": "Master the command line in this immersive terminal simulation and hacking puzzle browser game.",
+        "keywords": "hacking simulator, command line game, terminal puzzle, cli browser game, hacker web game",
         "image": f"{DOMAIN}/assets/og-orbitterminal.png"
     },
+    "DinoRunner": {
+        "title": "Chrome Dinosaur Game Clone | Play Online Free",
+        "description": "Play the classic offline T-Rex runner game directly in your browser. Jump over cacti and dodge pterodactyls.",
+        "keywords": "dinosaur game, chrome dino, offline t-rex, endless runner browser game, free online arcade",
+        "image": f"{DOMAIN}/assets/og-dinorunner.png"
+    },
     "PrismShift": {
-        "title": "PrismShift - Spatial Light Manipulation | SilenVault Games",
-        "description": "Shift the prism and manipulate light in this mind-bending spatial puzzle game.",
-        "keywords": "prismshift, spatial puzzle, light manipulation, brain teaser, web game, silenvault",
+        "title": "Spatial Light Manipulation Puzzle | Free Online Game",
+        "description": "Shift perspectives and manipulate light in this mind-bending 3D spatial puzzle game.",
+        "keywords": "spatial puzzle game, light manipulation puzzle, brain teaser browser game, perspective puzzle",
         "image": f"{DOMAIN}/assets/og-prismshift.png"
     },
     "ShiftProtocol": {
-        "title": "ShiftProtocol - Time & Logic Execution | SilenVault Games",
-        "description": "Execute the right protocol at the right time. ShiftProtocol tests your temporal logic skills.",
-        "keywords": "shiftprotocol, logic game, timing puzzle, execution game, web game, silenvault",
+        "title": "Time & Logic Execution Puzzle | Free Web Game",
+        "description": "Execute the right protocol at the right time. Test your temporal logic and execution skills.",
+        "keywords": "time puzzle game, execution logic game, browser timing puzzle, sequence solver",
         "image": f"{DOMAIN}/assets/og-shiftprotocol.png"
     },
     "ViperGrid": {
-        "title": "ViperGrid - Fast-paced Cyber Survival | SilenVault Games",
-        "description": "Survive the neon grid. ViperGrid delivers high-speed evasion and tactical movement.",
-        "keywords": "vipergrid, arcade survival, grid game, cyberpunk action, web game, silenvault",
+        "title": "Fast-Paced Cyber Survival Arcade Game | Play Free",
+        "description": "Survive the neon grid. High-speed evasion, tactical movement, and cyberpunk arcade action.",
+        "keywords": "arcade survival game, grid evasion game, cyberpunk action web game, retro neon arcade",
         "image": f"{DOMAIN}/assets/og-vipergrid.png"
     },
     "ROOT": {
-        "title": "SilenVault Games - Premium Web Game Collection",
-        "description": "Play the SilenVault Games collection. A suite of premium, ad-free web games including puzzles, rhythm, and arcade experiences.",
-        "keywords": "silenvault games, web games, free browser games, puzzle games, cyberpunk games",
+        "title": "Premium Free Web Games | Puzzle, Arcade & Strategy",
+        "description": "Play a suite of premium, ad-free web games directly in your browser. Features relaxing puzzles, rhythm hacking, and cyberpunk arcades.",
+        "keywords": "free browser games, premium web games, no ads games, online puzzle games, retro arcade browser",
         "image": f"{DOMAIN}/assets/og-main.png"
     }
 }
+import re
 
 def generate_seo_block(game_key, folder=""):
     data = GAMES.get(game_key, GAMES["ROOT"])
@@ -100,10 +107,9 @@ def inject_seo(file_path, game_key, folder=""):
     with open(file_path, 'r', encoding='utf-8') as f:
         content = f.read()
 
-    # Skip if already injected
+    # Remove old SEO block if it exists
     if "<!-- SEO Meta Tags -->" in content:
-        print(f"Skipping {file_path}, already has SEO tags.")
-        return
+        content = re.sub(r'<!-- SEO Meta Tags -->.*?</head>', '</head>', content, flags=re.DOTALL)
 
     # Find the closing </head> or <title>
     head_close_idx = content.find('</head>')
