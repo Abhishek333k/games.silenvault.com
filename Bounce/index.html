@@ -34,13 +34,21 @@
     <meta property="twitter:title" content="Retro Bounce - Endless Platformer | Play Free">
     <meta property="twitter:description" content="Navigate the bouncing red ball through treacherous spikes and platforms in this retro endless runner.">
     <meta property="twitter:image" content="https://games.silenvault.com/assets/og-bounce.png">
+    <!-- UI Upgrade -->
+    <link rel="stylesheet" href="../assets/arcade-cabinet.css">
+    <style>
+        #ui { position: absolute; top: 20px; left: 20px; color: #fff; font-size: 24px; font-weight: bold; text-shadow: 2px 2px 0 #000; z-index: 100; font-family: monospace; }
+    </style>
 </head>
 <body>
-    <div id="ui">LEVEL: <span id="level">1</span></div>
-    <canvas id="game"></canvas>
-    <div class="controls">
-        <div class="btn" id="btn-left">⬅</div>
-        <div class="btn" id="btn-right">➡</div>
+    <div id="arcade-cabinet">
+        <div id="arcade-bezel">
+            <div id="game-container">
+                <div id="ui">LEVEL: <span id="level">1</span></div>
+                <canvas id="game"></canvas>
+                <div class="crt-overlay"></div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -53,8 +61,17 @@
         let keys = { left: false, right: false };
 
         function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
+            const dpr = window.devicePixelRatio || 1;
+            const container = document.getElementById('game-container');
+            width = container ? container.clientWidth : window.innerWidth;
+            height = container ? container.clientHeight : window.innerHeight;
+            
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+            canvas.style.width = width + 'px';
+            canvas.style.height = height + 'px';
+            ctx.scale(dpr, dpr);
+
             if(platforms.length === 0) generateLevel();
         }
         window.addEventListener('resize', resize);
@@ -62,10 +79,6 @@
         // Controls
         window.addEventListener('keydown', e => { if(e.key==='ArrowLeft') keys.left=true; if(e.key==='ArrowRight') keys.right=true; });
         window.addEventListener('keyup', e => { if(e.key==='ArrowLeft') keys.left=false; if(e.key==='ArrowRight') keys.right=false; });
-        document.getElementById('btn-left').addEventListener('touchstart', e => { e.preventDefault(); keys.left=true; });
-        document.getElementById('btn-left').addEventListener('touchend', e => { e.preventDefault(); keys.left=false; });
-        document.getElementById('btn-right').addEventListener('touchstart', e => { e.preventDefault(); keys.right=true; });
-        document.getElementById('btn-right').addEventListener('touchend', e => { e.preventDefault(); keys.right=false; });
 
         function generateLevel() {
             platforms = []; spikes = [];
@@ -189,14 +202,28 @@
             ctx.restore();
         }
 
-        function loop() {
-            let offset = update();
+        let lastTime = 0;
+        let accumulator = 0;
+        const STEP = 1/60;
+
+        function loop(time = 0) {
+            let dt = (time - lastTime) / 1000;
+            if (dt > 0.25) dt = 0.25; // Prevent death spiral on tab minimize
+            lastTime = time;
+            accumulator += dt;
+
+            let offset;
+            while(accumulator >= STEP) {
+                offset = update();
+                accumulator -= STEP;
+            }
+
             if(offset !== undefined) draw(offset);
             requestAnimationFrame(loop);
         }
 
         resize();
-        loop();
+        requestAnimationFrame(loop);
     </script>
 
     <!-- NATIVE MOBILE TOUCH ZONE CONTROLLER (Phase 2) -->
