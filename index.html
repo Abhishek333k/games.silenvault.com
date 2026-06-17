@@ -179,6 +179,74 @@
             font-size: 0.6rem;
             letter-spacing: 0.3rem;
         }
+
+        /* Search & Filter UI */
+        .controls-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .search-box {
+            width: 90%;
+            max-width: 600px;
+            padding: 1rem 1.5rem;
+            background: rgba(10, 10, 15, 0.6);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            color: white;
+            font-size: 1.2rem;
+            outline: none;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            text-align: center;
+            font-family: 'Outfit', sans-serif;
+            letter-spacing: 0.1rem;
+        }
+
+        .search-box:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
+            background: rgba(10, 10, 15, 0.9);
+        }
+
+        .category-filters {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 90%;
+        }
+
+        .filter-pill {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: #aaa;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+            letter-spacing: 0.1rem;
+            text-transform: uppercase;
+        }
+
+        .filter-pill:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .filter-pill.active {
+            background: var(--accent);
+            color: black;
+            border-color: var(--accent);
+            font-weight: bold;
+            box-shadow: 0 0 15px var(--accent);
+        }
     </style>
 
     
@@ -210,7 +278,17 @@
     
     <header>
         <h1 class="logo">PEGASUS</h1>
-        <p class="system-status">ACTIVE GAME VAULT</p>
+        <p class="system-status" style="margin-bottom: 2rem;">ACTIVE GAME VAULT</p>
+        
+        <div class="controls-container">
+            <input type="text" id="search-input" class="search-box" placeholder="SEARCH VAULT..." autocomplete="off">
+            <div class="category-filters" id="category-filters">
+                <button class="filter-pill active" data-category="all">ALL</button>
+                <button class="filter-pill" data-category="logic">LOGIC / PUZZLE</button>
+                <button class="filter-pill" data-category="arcade">ARCADE / ACTION</button>
+                <button class="filter-pill" data-category="retro">RETRO CLASSICS</button>
+            </div>
+        </div>
     </header>
 
     <div id="game-vault">
@@ -413,11 +491,38 @@
             }
         ];
 
+        const CATEGORY_MAP = {
+            'aetheria': 'logic', 'vipergrid': 'arcade', 'igniszero': 'arcade', 
+            'shiftprotocol': 'logic', 'orbitterminal': 'logic', 'prismshift': 'logic',
+            'mnemonic': 'logic', 'lumina': 'arcade', 'bitbeat': 'arcade',
+            'dinorunner': 'retro', 'game2048': 'logic', 'tetris': 'retro',
+            'asteroids': 'retro', 'floppybird': 'arcade', 'snake': 'retro',
+            'spaceinvaders': 'retro', 'pacman': 'retro'
+        };
+
+        GAMES.forEach(g => g.category = CATEGORY_MAP[g.id] || 'retro');
+
+        let currentSearch = '';
+        let currentCategory = 'all';
+
         function renderVault() {
             const vault = document.getElementById('game-vault');
             const nebula = document.getElementById('nebula');
 
-            vault.innerHTML = GAMES.map(game => {
+            const filteredGames = GAMES.filter(game => {
+                const matchesSearch = game.title.toLowerCase().includes(currentSearch) || 
+                                      game.desc.toLowerCase().includes(currentSearch) ||
+                                      game.tagline.toLowerCase().includes(currentSearch);
+                const matchesCategory = currentCategory === 'all' || game.category === currentCategory;
+                return matchesSearch && matchesCategory;
+            });
+
+            if (filteredGames.length === 0) {
+                vault.innerHTML = `<div style="text-align: center; width: 100%; padding: 4rem; color: #555; letter-spacing: 0.2rem;">NO DATABANKS MATCHING QUERY</div>`;
+                return;
+            }
+
+            vault.innerHTML = filteredGames.map(game => {
                 const statsHtml = game.stats.map(s => `
                     <div class="record-item">${s.label}: ${localStorage.getItem(s.key) || '0'}</div>
                 `).join('');
@@ -443,6 +548,21 @@
                 `;
             }).join('');
         }
+
+        // Setup Event Listeners
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            currentSearch = e.target.value.toLowerCase();
+            renderVault();
+        });
+
+        document.querySelectorAll('.filter-pill').forEach(pill => {
+            pill.addEventListener('click', (e) => {
+                document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+                e.target.classList.add('active');
+                currentCategory = e.target.getAttribute('data-category');
+                renderVault();
+            });
+        });
 
         function updateBg(color) {
             document.getElementById('nebula').style.background = `
