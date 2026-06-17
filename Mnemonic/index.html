@@ -96,13 +96,13 @@
             </section>
 
             <!-- Overlay for Level Completed / Decrypting -->
-            <div id="overlay" class="hidden">
+            <div id="overlay" style="display: none !important;" class="hidden">
                 <h2 id="overlay-text" class="neon-green">GATE_DECRYPTED</h2>
                 <p id="overlay-subtext">INJECTING DATA PACKETS...</p>
             </div>
 
             <!-- Game Over Screen -->
-            <div id="game-over-screen" class="screen hidden">
+            <div id="game-over-screen" style="display: none !important;" class="screen hidden">
                 <div class="glass-panel">
                     <h1 class="neon-red glitch" data-text="SYSTEM_LOCKED">SYSTEM LOCKOUT</h1>
                     <p class="tagline red-text">CONNECTION TERMINATED BY HOST FIREWALL</p>
@@ -117,5 +117,7 @@
     </div>
 
     <script src="game.js"></script>
+    <link rel="stylesheet" href="../assets/toast.css">
+    <script src="../assets/toast.js"></script>
 </body>
 </html>

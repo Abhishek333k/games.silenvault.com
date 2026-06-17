@@ -201,7 +201,7 @@ function levelComplete() {
     currentState = STATES.CLEAR;
     score++;
     updateHUD();
-    if (UI.overlay) UI.overlay.classList.remove('hidden');
+    if (UI.overlay) if(window.showToast) window.showToast(UI.overlayText.innerText, 'cyan');
     localStorage.setItem('prism_high_score', score);
     
     setTimeout(() => {

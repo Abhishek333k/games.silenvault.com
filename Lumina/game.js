@@ -183,7 +183,7 @@ function gameOver() {
     }
     UI.finalStats.innerText = `DEPTH REACHED: ${score} FEET`;
     UI.hud.classList.add('hidden');
-    UI.gameoverScreen.classList.remove('hidden');
+    if(window.showToast) window.showToast('SYSTEM_LOCKOUT', 'red');
     playSound(180, 0.5, 'sawtooth', 0.25);
 }
 

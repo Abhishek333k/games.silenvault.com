@@ -196,7 +196,7 @@ function levelComplete() {
 
 function gameOver() {
     currentState = STATES.GAMEOVER;
-    if (UI.overlay) UI.overlay.classList.remove('hidden');
+    if (UI.overlay) if(window.showToast) window.showToast(UI.overlayText.innerText, 'cyan');
     localStorage.setItem('orbit_high_score', score);
     setTimeout(() => location.reload(), 2000);
 }

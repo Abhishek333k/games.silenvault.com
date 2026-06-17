@@ -233,7 +233,7 @@ function gameOver() {
     if (score > currentHighScore) {
         localStorage.setItem('mnemonic_high_score', score);
     }
-    if (UI.gameOverScreen) UI.gameOverScreen.classList.remove('hidden');
+    if (UI.gameOverScreen) if(window.showToast) window.showToast('SYSTEM_LOCKOUT', 'red');
     if (UI.finalScore) UI.finalScore.innerText = score.toString().padStart(2, '0');
     if (UI.hud) UI.hud.classList.add('hidden');
 }
@@ -712,7 +712,7 @@ function triggerVictory() {
     // Spawn data flow pulses for visual payoff
     spawnVictoryPulses();
 
-    if (UI.overlay) UI.overlay.classList.remove('hidden');
+    if (UI.overlay) if(window.showToast) window.showToast(UI.overlayText.innerText, 'cyan');
     
     setTimeout(() => {
         if (UI.overlay) UI.overlay.classList.add('hidden');

@@ -292,7 +292,7 @@ function gameOver() {
     }
     UI.finalStats.innerText = `FINAL SCORE GAINED: ${Math.floor(score)}`;
     UI.hud.classList.add('hidden');
-    UI.gameoverScreen.classList.remove('hidden');
+    if(window.showToast) window.showToast('SYSTEM_LOCKOUT', 'red');
 }
 
 // Logic updates
