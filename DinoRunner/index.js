@@ -534,6 +534,7 @@
             var now = getTimeStamp();
             var deltaTime = now - (this.time || now);
             this.time = now;
+            if (deltaTime > 32) deltaTime = 32; // PREVENT TAB MINIMIZE DEATH SPIRAL
 
             if (this.playing) {
                 this.clearCanvas();
