@@ -52,7 +52,18 @@
             </template>
         </div>
     </div>
+
+    <!-- NATIVE MOBILE TOUCH ZONE CONTROLLER (Phase 2) -->
+    <script src="../assets/touch_zones.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+         const gameArea = document.querySelector('canvas') || document.body;
+         const zones = [{rect: {x:0, y:0, w:1, h:1}, key: ' ', code: 32}];
+         new window.TouchZoneController(gameArea, zones);
+      });
+    </script>
 </body>
+
 
 <script>
     document.onkeydown = function(evt) {

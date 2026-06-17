@@ -36,7 +36,18 @@
   </div>
   <script src='engine.js'></script>
   <script src='game.js'></script>
+
+    <!-- NATIVE MOBILE TOUCH ZONE CONTROLLER (Phase 2) -->
+    <script src="../assets/touch_zones.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+         const gameArea = document.querySelector('canvas') || document.body;
+         const zones = [{rect: {x:0, y:0, w:0.33, h:1}, key: 'ArrowLeft', code: 37}, {rect: {x:0.33, y:0, w:0.34, h:1}, key: ' ', code: 32}, {rect: {x:0.67, y:0, w:0.33, h:1}, key: 'ArrowRight', code: 39}];
+         new window.TouchZoneController(gameArea, zones);
+      });
+    </script>
 </body>
+
 </html>
 
 
