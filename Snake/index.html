@@ -168,5 +168,39 @@
 
       document.getElementById('go_full_screen').addEventListener('click', go_full_screen);
     </script>
-  </body>
+  
+    <!-- NATIVE MOBILE SWIPE CONTROLLER (Phase 1) -->
+    <script src="../assets/swipe.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+         // Attach to the main game container or document body
+         const gameArea = document.querySelector('.container') || document.getElementById('game-area') || document.getElementById('pacman') || document.body;
+         
+         // Using Qwen's robust 8-point logic architecture
+         new window.SwipeController(gameArea, (dir) => {
+            let key = '';
+            let keyCode = 0;
+            if (dir === 'UP') { key = 'ArrowUp'; keyCode = 38; }
+            if (dir === 'DOWN') { key = 'ArrowDown'; keyCode = 40; }
+            if (dir === 'LEFT') { key = 'ArrowLeft'; keyCode = 37; }
+            if (dir === 'RIGHT') { key = 'ArrowRight'; keyCode = 39; }
+            
+            // Dispatch synthetic keyboard events to natively hook into the existing game logic
+            const evtObj = { key: key, code: key, keyCode: keyCode, which: keyCode, bubbles: true, cancelable: true };
+            const eventDown = new KeyboardEvent('keydown', evtObj);
+            const eventUp = new KeyboardEvent('keyup', evtObj);
+            
+            window.dispatchEvent(eventDown);
+            document.dispatchEvent(eventDown);
+            
+            // Some games require keyup to complete the action
+            setTimeout(() => {
+                window.dispatchEvent(eventUp);
+                document.dispatchEvent(eventUp);
+            }, 50);
+         });
+      });
+    </script>
+</body>
+
 </html>
